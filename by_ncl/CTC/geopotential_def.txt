@@ -1,0 +1,46 @@
+ Copyright (C) 1995-2018 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.5.0
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Variable: f
+Type: file
+filename:	era5.geopotential.19811208
+path:	/mnt/h/ERA5_geopotential/era5.geopotential.19811208.nc
+   file global attributes:
+      Conventions : CF-1.6
+      history : 2020-10-06 00:05:05 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data2/adaptor.mars.internal-1601942663.0731676-12658-3-d95ff477-b5e5-473f-93c9-ff7566e7bcb9.nc /cache/tmp/d95ff477-b5e5-473f-93c9-ff7566e7bcb9-adaptor.mars.internal-1601942663.0737636-12658-2-tmp.grib
+   dimensions:
+      longitude = 281
+      latitude = 241
+      level = 19
+      time = 24
+   variables:
+      float longitude ( longitude )
+         units :	degrees_east
+         long_name :	longitude
+
+      float latitude ( latitude )
+         units :	degrees_north
+         long_name :	latitude
+
+      integer level ( level )
+         units :	millibars
+         long_name :	pressure_level
+
+      integer time ( time )
+         units :	hours since 1900-01-01 00:00:00.0
+         long_name :	time
+         calendar :	gregorian
+
+      short z ( time, level, latitude, longitude )
+         scale_factor :	2.493372434975508
+         add_offset :	81252.72792315751
+         _FillValue :	-32767
+         missing_value :	-32767
+         units :	m**2 s**-2
+         long_name :	Geopotential
+         standard_name :	geopotential
+
+ 
