@@ -12,7 +12,7 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 begin
 
 ;---Generate random data with an average of 10 and a stddev of 3.
-  pic_dir ="/mnt/f/snow_related/pic/snow_byTC/"
+  pic_dir ="/mnt/f/snow_related/pic/snow_TC/"
   file_dir1="/mnt/f/snow_sts_data/1981-2020/per_pre_gss_mon.txt"
   f1    = asciiread(file_dir1,-1,"string")
   pre   = stringtofloat(str_get_field(f1(1:),2," "))*100 
@@ -71,23 +71,21 @@ plots(1) = gsn_csm_xy(wks,gss,xpos+0.25,sres)
 overlay(plots(0),plots(1))
 draw(plots)
 
-; ; Create some labelbars for a legend
-; lbres                    = True          ; labelbar only resources
-; lbres@vpWidthF           = 0.1           ; labelbar width
-; lbres@vpHeightF          = 0.2           ; labelbar height
-; lbres@lbBoxMajorExtentF  = 0.15          ; puts space between color boxes
-; lbres@lbMonoFillPattern  = True          ; Solid fill pattern
-; lbres@lbLabelFontHeightF = 0.015         ; font height. default is small
-; lbres@lbLabelJust        = "CenterLeft"  ; left justify labels
-; lbres@lbPerimOn          = False
-
-; labels = (/"Prep", "Snow"/)
-; xpos1   = 0.23
-
-; lbres@lbFillColors       = colors(0)
-; gsn_labelbar_ndc(wks,1,labels(0),xpos1,0.23,lbres) ; draw left labelbar column
-; lbres@lbFillColors       = colors(1)
-; gsn_labelbar_ndc(wks,1,labels(1),xpos1+0.32,0.23,lbres) ; draw left labelbar column
+;图例
+lbres                    = True          ; labelbar only resources
+lbres@vpWidthF           = 0.2           ; labelbar width
+lbres@vpHeightF          = 0.05           ; labelbar height
+lbres@lbBoxMajorExtentF  = 0.32          ; puts space between color boxes
+lbres@lbMonoFillPattern  = True          ; Solid fill pattern
+lbres@lbLabelFontHeightF = 0.015        ; font height. default is small
+lbres@lbLabelJust        = "CenterLeft"  ; left justify labels
+lbres@lbPerimOn          = False
+lbres@lgPerimColor      = "white"
+lbres@lbFillColors       = colors(0)
+poslb1=0.150
+gsn_labelbar_ndc(wks,1,"PA",poslb1,0.12,lbres) ; draw left labelbar column
+lbres@lbFillColors       = colors(1)
+gsn_labelbar_ndc(wks,1,"SD",poslb1+0.2,0.12,lbres) ; draw left labelbar column
 
 frame(wks) 
 end

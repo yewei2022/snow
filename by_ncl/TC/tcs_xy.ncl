@@ -1,7 +1,7 @@
 ;绘制风暴年份，月份分布
 ;文件读取方式 http://www.ncl.ucar.edu/Applications/list_io.shtml
 ;https://geocat-examples.readthedocs.io/en/latest/gallery/Scatter/NCL_scatter_5.html#sphx-glr-gallery-scatter-ncl-scatter-5-py
-;  ncl /mnt/f/snow_related/code/by_ncl/tcs_xy.ncl
+;  ncl /mnt/f/snow_related/code/by_ncl/TC/tcs_xy.ncl
 ;
 ; These files are loaded by default in NCL V6.2.0 and newer
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
@@ -10,15 +10,15 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 
 begin
 ;---Generate random data with an average of 10 and a stddev of 3.
-  pic_dir ="/mnt/f/snow_related/pic/tc/"
+  pic_dir ="/mnt/f/snow_related/pic/TC/"
   filename="tc_date_infl"
   file_dir="/mnt/f/snow_sts_data/TC/"+filename+".txt" ;所有
 
   ; file_dir="/mnt/f/snow_sts_data/TC/tc_date_heavypre.txt" 
   f       = asciiread(file_dir,-1,"string")
-  year    = stringtointeger(str_get_field(f(1:),2," ")) 
-  mon     = stringtointeger(str_get_field(f(1:),3," ")) 
-  wind    = stringtointeger(str_get_field(f(1:),5," ")) 
+  year    = stringtointeger(str_get_field(f(1:),4," ")) 
+  mon     = stringtointeger(str_get_field(f(1:),5," ")) 
+  wind    = stringtointeger(str_get_field(f(1:),3," ")) 
   mon@_FillValue =  32700
 
   npts = numAsciiRow(file_dir)-1 ;获取行数-1=站点数

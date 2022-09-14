@@ -1,6 +1,6 @@
 ; 各个月份的track,降雪期间的TC位置
 
-;  ncl /mnt/f/snow_related/code/by_ncl/track_in_mon.ncl
+;  ncl /mnt/f/snow_related/code/by_ncl/TC/track_in_mon.ncl
 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
@@ -38,23 +38,22 @@ undef("plot_track")
 
 begin
 
-pic_dir = "/mnt/f/snow_related/pic/tc/"
+pic_dir = "/mnt/f/snow_related/pic/TC/track/"
 
-count=7
+count=4
 file_name=(/"02","04","05","06","09","10","11","12"/)
 mon_name = (/"Feb","Apr","May","Jun","Sep", "Oct","Nov","Dec"/)
 TC_file_path= "/mnt/f/snow_sts_data/TC/track_in_season.txt"
 nfil        = numAsciiRow(TC_file_path)-1
 files       = asciiread(TC_file_path, -1, "string")
 TC          = str_get_field(files(1:),5," ")
-TC_mon      = str_get_field(files(1:),2," ")
+TC_mon      = str_get_field(files(1:),3," ")
 snow_file_path= "/mnt/f/snow_sts_data/TC/TC_dot_season.txt"
 snow_files    = asciiread(snow_file_path, -1, "string")
 lon_snow      = stringtofloat(str_get_field(snow_files(1:),2," ")) 
 lat_snow      = stringtofloat(str_get_field(snow_files(1:),3," "))
 dot_mon       = str_get_field(snow_files(1:),5," ")
 wind_snow     = stringtoint(str_get_field(snow_files(1:),7," "))
-
 
 
 wks = gsn_open_wks("eps", pic_dir+"track"+file_name(count))
@@ -93,7 +92,7 @@ colours=(/4,7,12,13,16,14,15/)
 
 ; ;------------------------------画路径--------------------------
   map = gsn_csm_map(wks,res)
-color="black"
+  color="black"
   do i=0,nfil-1
     if (TC_mon(i).eq.file_name(count)) then
     plot_track(wks,TC(i),map,color)  

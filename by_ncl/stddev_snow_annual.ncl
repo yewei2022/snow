@@ -9,15 +9,15 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 
 begin
 ;---Generate random data with an average of 10 and a stddev of 3.
-  pic_dir ="/mnt/f/snow_related/pic/snow_byTC/stddev/"
+  pic_dir ="/mnt/f/snow_related/pic/snow_TC/stddev/"
 
-count=2
-pic_name=(/"days","dailypre","gssinc","gss"/)
+count=0
+pic_name=(/"days","dailypre","gss","gssinc"/)
 ymin=(/-3, -2, -2, -2/)
-ymax=(/3.2, 4, 4, 4/)
-axis_name=(/"SF","PA(mm)","SDI(cm)", "SD(cm)"/)
-ymax_delta=(/20,2,1,1/) ;用于折线图
-ymin_delta=(/20,2,1,1/) ;用于折线图
+ymax=(/3.2, 4, 6.5, 4/)
+axis_name=(/"SF","PA(mm)","SD(cm)", "SDI(cm)"/)
+ymin_delta=(/20,2,1,1/) ;下限减多少
+ymax_delta=(/20,2,1.6,1/) ;上限加多少
 
   file_dir="/mnt/f/snow_sts_data/1981-2020/days_pre_gss_annual.txt"
   f1       = asciiread(file_dir,-1,"string")

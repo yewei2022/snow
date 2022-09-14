@@ -1,4 +1,4 @@
-;绘制降雪日数 降水量 积雪深度增量 的 月变化
+;绘制降雪日数 降水量 积雪深度 的 月变化
 ;文件读取方式 http://www.ncl.ucar.edu/Applications/list_io.shtml
 ;https://geocat-examples.readthedocs.io/en/latest/gallery/Scatter/NCL_scatter_5.html#sphx-glr-gallery-scatter-ncl-scatter-5-py
 ;  ncl /mnt/f/snow_related/code/by_ncl/days_pre_gss_mon.ncl
@@ -11,7 +11,7 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 
 begin
 ;---Generate random data with an average of 10 and a stddev of 3.
-  pic_dir ="/mnt/f/snow_related/pic/snow_byTC/"
+  pic_dir ="/mnt/f/snow_related/pic/snow_TC/"
   file_dir1="/mnt/f/snow_sts_data/1981-2020/days_pre_gss_mon.txt"
   f1    = asciiread(file_dir1,-1,"string")
   days  = stringtointeger(str_get_field(f1(1:),2," ")) 

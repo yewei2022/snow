@@ -122,8 +122,8 @@ begin
 ;--------------------读站点数据----------------------------------
 
   filename ="sta_avg_gss"
-  filepath = "/mnt/h/snow_sts_data/1981-2020/"+filename+".txt"  ;参数文件路径
-  pic_dir = "/mnt/f/snow_related/pic/snow_byTC/"
+  filepath = "/mnt/f/snow_sts_data/1981-2020/"+filename+".txt"  ;参数文件路径
+  pic_dir = "/mnt/f/snow_related/pic/snow_TC/"
   f       = asciiread(filepath,-1,"string")
   ; sta     = stringtointeger(str_get_field(f,1," "))  ;读取站号
   lon     = stringtofloat(str_get_field(f(1:),2," ")) 
@@ -161,7 +161,7 @@ begin
 
 ;===========================================================================
 ; Begin plotting section.
-  wks = gsn_open_wks("x11",pic_dir+filename)              ; send graphics to PNG file
+  wks = gsn_open_wks("eps",pic_dir+filename)              ; send graphics to PNG file
 
 ;---Set up some map resources.
   res                       = True
@@ -189,7 +189,7 @@ begin
   mpres@mpFillOn=False
 
   mpres@mpDataBaseVersion       = "MediumRes"
-  mpres@mpDataSetName           =  "/mnt/h/d/ChinaMap/Earth..4"
+  mpres@mpDataSetName           =  "/mnt/d/ChinaMap/Earth..4"
   mpres@mpOutlineSpecifiers     = (/"China:states"/)
   ;边界线
   ; mpres@mpOutlineBoundarySets   = "National"
@@ -202,7 +202,7 @@ begin
   ; plot_sig_scatter(wks,lat_sig,lon_sig,map)
 
 ;高原轮廓线
-  shp_line = "/mnt/h/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  
+  shp_line = "/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  
   lnres                  = True     
   lnres@gsLineColor      ="orange"
   lnres@gsLineThicknessF = 4.0           ; 6x thickness          ; 6x thickness  

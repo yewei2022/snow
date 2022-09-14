@@ -7,18 +7,19 @@
 ;   - Drawing a histogram
 ;   - Setting the bin intervals in a histogram
 ; 图1和图2的区别  图2直方图的宽度随x轴的值的变化而变化
+
 ;  ncl /mnt/f/snow_related/code/by_ncl/histogram_pre_gss.ncl
 
 begin
 
-  pic_dir ="/mnt/f/snow_related/pic/snow_byTC/"
-  file_dir1="/mnt/h/snow_sts_data/1981-2020/snow_pre_gss.txt"
+  pic_dir ="/mnt/f/snow_related/pic/snow_TC/"
+  file_dir1="/mnt/f/snow_sts_data/1981-2020/snow_pre_gss.txt"
   f1    = asciiread(file_dir1,-1,"string")
 
   count=0
   col=(/6,7/)
-  maxval_99=(/25,10/) ;95% 的日降水量样本量小于22.225 积雪深度小于10
-  interval_value=(/5,1/)
+  maxval_99=(/50,20/) ;95% 的日降水量样本量小于22.225 积雪深度小于10
+  interval_value=(/5,2/)
   unit=(/"(mm)","(cm)"/)
   pic_name=(/"pre","gss"/)
   y  = stringtofloat(str_get_field(f1(1:),col(count)," ")) 

@@ -11,6 +11,12 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/contrib/cd_string.ncl"
 
 begin
 
+; test
+data00    = addfile("/mnt/f/snow_practice/era5.geopotential.19790101.nc", "r")
+z = short2flt(data00->z(:,{500},:,:))
+printVarSummary(z)
+exit
+
 pic_dir  = "/mnt/f/snow_related/pic/atmos_env/" 
 
 ; 1 read ERA5

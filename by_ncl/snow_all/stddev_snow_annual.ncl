@@ -13,13 +13,13 @@ begin
 ;---Generate random data with an average of 10 and a stddev of 3.
   pic_dir ="/mnt/f/snow_related/pic/snow_all/stddev/"
 
-count=0
-pic_name=(/"days","dailypre","gssinc","gss"/)
+count=2
+pic_name=(/"days","dailypre","gss","gss_inc"/)
 ymin=(/-3,-2,-2,-2/)
-ymax=(/3.2,4,4,6.5/)
-axis_name=(/"SF","PA(mm)","SDI(cm)","SD(cm)"/)
-ymax_delta=(/1200,0.2,0.05,0.5/) ;用于折线图
-ymin_delta=(/1200,0.2,0.05,0.5/) ;用于折线图
+ymax=(/3.2,4,6.5,4/)
+axis_name=(/"SF","PA(mm)","SD(cm)","SDI(cm)"/)
+ymin_delta=(/1200,0.2,0.5,0.1/) ;下限减多少
+ymax_delta=(/1200,0.3,0.6,0.1/) ;上限加多少
 
 
   file_dir="/mnt/f/snow_sts_data/1981-2020/days_pre_gss_annual_all.txt"
@@ -48,7 +48,7 @@ printMinMax(var, 0)
 ;*********************************
 ; create plot
 ;********************************
-wks   = gsn_open_wks ("x11", pic_dir+pic_name(count)+"_all") 
+wks   = gsn_open_wks ("eps", pic_dir+pic_name(count)+"_all") 
   gsn_define_colormap(wks, "wgne15")       ; send graphics to PNG file
   colors=(/5,13/)
 

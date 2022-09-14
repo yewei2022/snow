@@ -10,7 +10,7 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 
 begin
 ;--------------------读站点数据--------
-  filepath = "/mnt/f/snow_sts_data/sta_info.txt"  ;参数文件路径 初筛的40年长度的900+站点
+  filepath = "/mnt/f/snow_sts_data/station_pick/sta_info.txt"  ;参数文件路径 初筛的40年长度的900+站点
   f       = asciiread(filepath,-1,"string")
   sta_all = stringtointeger(str_get_field(f(1:),1,",")) 
   lat     = stringtofloat(str_get_field(f(1:),3,",")) 
@@ -45,7 +45,7 @@ begin
   ; tp_sta=new(nmsg,integer)
   ista = ind(.not.ismissing(sta))
   tp_sta = sta(ista)
-  asciiwrite("/mnt/f/snow_sts_data/TP_sta_by2014.txt",tp_sta)   
+  asciiwrite("/mnt/f/snow_sts_data/station_pick/TP_sta_id_by2014.txt",tp_sta)   
 
 end     
  

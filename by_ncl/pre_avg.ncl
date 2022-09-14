@@ -121,7 +121,7 @@ begin
 ;--------------------读站点数据----------------------------------
   filename ="sta_avg_pre"
   filepath = "/mnt/f/snow_sts_data/1981-2020/"+filename+".txt"  ;参数文件路径
-  pic_dir = "/mnt/f/snow_related/pic/snow_byTC/"
+  pic_dir = "/mnt/f/snow_related/pic/snow_TC/"
   f       = asciiread(filepath,-1,"string")
   ; sta     = stringtointeger(str_get_field(f,1," "))  ;读取站号
   lon     = stringtofloat(str_get_field(f(1:),2," ")) 
@@ -180,7 +180,7 @@ begin
   mpres@mpFillOn=False
 
   mpres@mpDataBaseVersion       = "MediumRes"
-  mpres@mpDataSetName           =  "/mnt/h/d/ChinaMap/Earth..4"
+  mpres@mpDataSetName           =  "/mnt/d/ChinaMap/Earth..4"
   mpres@mpOutlineSpecifiers     = (/"China:states"/)
   ;边界线
   ; mpres@mpOutlineBoundarySets   = "National"

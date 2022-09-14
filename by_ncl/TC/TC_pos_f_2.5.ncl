@@ -3,18 +3,18 @@
 ;https://www.ncl.ucar.edu/Applications/scatter.shtml
 ;https://www.ncl.ucar.edu/Applications/polyg.shtml
 ; 网格分辨率2.5*2.5
-;  ncl /mnt/f/snow_related/code/by_ncl/TC_pos_f_2.5.ncl
+;  ncl /mnt/f/snow_related/code/by_ncl/TC/TC_pos_f_2.5.ncl
 
 begin
 
-pic_dir = "/mnt/f/snow_related/pic/tc/"
+pic_dir = "/mnt/f/snow_related/pic/TC/"
 count=0
 pic_name=(/"TC_dot","TC_dot_extrm"/)
 
 colors  = (/"white","deepskyblue","palegreen1","gold",\
-           "lightcoral","orangered","red4"/)
+           "lightcoral","orangered"/)
 
-levels=(/1,5,10,15,20,25/)
+levels=(/1,5,10,15,20/)
 
 ; levels=(/1,2,4,6,8,10/)
 
@@ -54,7 +54,7 @@ end do
 ; exit
 
 ;---Start the graphics
-  wks   = gsn_open_wks ("x11",pic_dir+pic_name(count)+"_2.5")    
+  wks   = gsn_open_wks ("eps",pic_dir+pic_name(count)+"_2.5")    
 
 ;---Resources for map plot
   mpres              = True
@@ -67,7 +67,7 @@ end do
   mpres@vpWidthF=0.5
   mpres@vpHeightF=0.6
 
-	mpres@mpDataSetName = "/mnt/h/d/ChinaMap/Earth..4"
+	mpres@mpDataSetName = "/mnt/d/ChinaMap/Earth..4"
 	mpres@mpFillOn      = False
 	mpres@mpOutlineBoundarySets = "National"
 	mpres@mpDataBaseVersion = "MediumRes"
@@ -113,11 +113,9 @@ end do
 				gnres@gsFillColor = colors(3)	
 			else if box_value.gt.levels(3) .and. box_value.le.levels(4) then
 				gnres@gsFillColor = colors(4)
-			else if box_value.gt.levels(4) .and. box_value.le.levels(5) then
+			else if box_value.gt.levels(4) 
 				gnres@gsFillColor = colors(5)
-			else if box_value.gt.levels(5) then
-				gnres@gsFillColor = colors(6)  
-			end if
+
 			end if
 			end if
 			end if

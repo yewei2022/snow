@@ -2,7 +2,7 @@
 ;纵向排列2条y轴
 ;文件读取方式 http://www.ncl.ucar.edu/Applications/list_io.shtml
 ;https://geocat-examples.readthedocs.io/en/latest/gallery/Scatter/NCL_scatter_5.html#sphx-glr-gallery-scatter-ncl-scatter-5-py
-;  ncl /mnt/f/snow_related/code/by_ncl/TC_annual.ncl
+;  ncl /mnt/f/snow_related/code/by_ncl/TC/TC_annual.ncl
 
 ; xy_19.ncl
 ; These files are loaded by default in NCL V6.2.0 and newer
@@ -12,7 +12,7 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 
 begin
 
-  pic_dir ="/mnt/f/snow_related/pic/tc/"
+  pic_dir ="/mnt/f/snow_related/pic/TC/"
 
   file_dir1="/mnt/f/snow_sts_data/TC/TC_annual.txt"
   f1       = asciiread(file_dir1,-1,"string")

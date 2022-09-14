@@ -8,7 +8,7 @@
 ;   - Changing the size of the dot fill pattern in gsn_contour_shade
 ;   - Increasing the density of fill patterns
 
-;  ncl /mnt/f/snow_related/code/by_ncl/wavelet.ncl
+;  ncl /mnt/f/snow_related/code/by_ncl/TC/wavelet.ncl
 
 ;--------------------------------------------------------------------
 ;
@@ -26,9 +26,9 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/shea_util.ncl"
 
 begin
 
-  pic_dir ="/mnt/f/snow_related/pic/tc/"
+  pic_dir ="/mnt/f/snow_related/pic/TC/"
 
-  file_dir1="/mnt/f/snow_sts_data/TC/TC_wind_snow_annual.txt"
+  file_dir1="/mnt/f/snow_sts_data/TC/TC_annual.txt"
   f1       = asciiread(file_dir1,-1,"string")
   timeo    = stringtofloat(str_get_field(f1(1:),1," ")) 
   TC_num   = stringtofloat(str_get_field(f1(1:),2," ")) 
@@ -140,7 +140,9 @@ yval=ispan(0, 14, 2)
   res2@gsnLeftString       = ""
   res2@gsnRightString      = ""
 
-; 绘图
+
+
+; 绘图 wavelet1
   ; plot_hatch_def = gsn_csm_contour(wks,power({1:15},:),res1)
 
   ; iplot_hatch_def = gsn_csm_contour(wks,SIG({1:15},:),res2)
@@ -161,6 +163,10 @@ yval=ispan(0, 14, 2)
   ; polyres@gsLineDashPattern=0
   ; gsn_polyline(wks,plot_hatch_def,timeo,w@coi,polyres) ; add polyline
   ; frame(wks)
+
+
+
+; 绘图 wavelet2
 
   gsn_define_colormap(wks, "temp_19lev")       ; send graphics to PNG file
   color3=(/17/)

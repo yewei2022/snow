@@ -1,4 +1,4 @@
-; ÓÃÀ´²âÊÔÊÇ·ñÄÜ»­Â·¾¶
+; 绘制多条TC路径 不同颜色代表不同分类
 
 ;  ncl /mnt/f/snow_related/code/by_ncl/track2.ncl
 
@@ -51,7 +51,7 @@ label   = stringtointeger(str_get_field(f(1:),2," "))
 ; print(label)
 ; exit
 
-  wks = gsn_open_wks("eps", pic_dir+file_name(count)+"_track")
+  wks = gsn_open_wks("x11", pic_dir+file_name(count)+"_track")
   gsn_define_colormap(wks, "wgne15")       ; send graphics to PNG file
   colors=(/14,7/)
  
