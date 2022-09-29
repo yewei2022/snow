@@ -1,7 +1,10 @@
 ;读取组内的TC所有活动日（包含顺延一天) ERA5 200hPa nc资料，
 ;以UTC12为日界 做日平均 
 ;计算每日距平 
-;选出降雪日距平再做平均，绘图
+;1 选出降雪日距平再做平均，绘图
+;2 TC日平均 绘图
+; 改step3 和4  picname 绘图dev
+
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl" 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl" 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl" 
@@ -11,16 +14,17 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/contrib/cd_string.ncl"
 
 begin
 
-pic_dir  = "/mnt/f/snow_related/pic/atmos_env/" 
+typelabel     = 1 ;1 2
+pic_dir  = "/mnt/f/snow_related/pic/atmos_env/REOF/" 
 
 ; 1 read ERA5
 name1=(/"geo200","u200","v200"/)
 count:=0
-data_dir0 ="/mnt/h/snow_sts_data/ERA5/all/pick/"+name1(count)+"_1.nc" 
+data_dir0 ="/mnt/f/snow_sts_data/ERA5/all/pick/"+name1(count)+"_6h.nc" 
 count:=1
-data_dir1 ="/mnt/h/snow_sts_data/ERA5/all/pick/"+name1(count)+"_1.nc" 
+data_dir1 ="/mnt/f/snow_sts_data/ERA5/all/pick/"+name1(count)+"_6h.nc" 
 count:=2
-data_dir2 ="/mnt/h/snow_sts_data/ERA5/all/pick/"+name1(count)+"_1.nc" 
+data_dir2 ="/mnt/f/snow_sts_data/ERA5/all/pick/"+name1(count)+"_6h.nc" 
 
 ; 1 读数据
 data0    = addfile(data_dir0, "r")
@@ -54,7 +58,7 @@ u_Day_mean = calculate_daily_values(u, "avg", 0, opt)
 v_Day_mean = calculate_daily_values(v, "avg", 0, opt)
 
 ; ; 3 读取TC活动日 挑出TC活动日的日均值
-date_dir_TC ="/mnt/h/snow_sts_data/TC/all_tc_days.txt"  ;1025
+date_dir_TC ="/mnt/f/snow_sts_data/TC/all_tc_days.txt"  ;1025
 datefile_TC = asciiread(date_dir_TC,-1,"string")
 YYYYMMDD_TC = str_get_field(datefile_TC(1:),2," ") 
 date_ind_TC=new(dimsizes(YYYYMMDD_TC), integer)
@@ -66,50 +70,53 @@ z_need1=z_Day_mean(date_ind_TC,:,:) ;TC日均值
 u_need1=u_Day_mean(date_ind_TC,:,:)
 v_need1=v_Day_mean(date_ind_TC,:,:)
 
-; 4 算距平 1025日 每日距平
+; ; step3 合成TC日
+
+;   z_avg=dim_avg_n_Wrap(z_need1, 0) ;TC日z平均场合成
+;   u_avg=dim_avg_n_Wrap(u_need1, 0) ;TC日u平均场合成
+;   v_avg=dim_avg_n_Wrap(v_need1, 0) ;TC日v平均场合成
+
+
+; step4 算距平 1025日 每日距平
   z_RmvTime  = dim_rmvmean_n_Wrap(z_need1,0)
   date_RmvTime=cd_string(z_RmvTime&time, "%Y%N%D")
   ; print(date_RmvTime)
 
+  ; ; 读取降雪日 116日 挑出降雪日的日均值 日距平
+  date_dir_snow ="/mnt/f/snow_sts_data/REOF/spa_index.txt" ;118
+  datefile_snow = asciiread(date_dir_snow,-1,"string")
+  YYYYMMDD_snow = str_get_field(datefile_snow(1:),1," ") 
+  type          = str_get_field(datefile_snow(1:),4," ")
+  indexes_type  = ind(type.eq.typelabel)
+  YYYYMMDD_type = YYYYMMDD_snow(indexes_type)
+  date_ind_snow=new(dimsizes(YYYYMMDD_type), integer)
+  do i=0,dimsizes(YYYYMMDD_type)-1 
+  date_ind_snow(i) =str_match_ind(date_RmvTime, YYYYMMDD_type(i))
+  end do
+  print(YYYYMMDD_type)
 
+  ; 挑均值和距平
+  z_need2 = z_need1(date_ind_snow,:,:) ;均值
+  z_need3 = z_RmvTime(date_ind_snow,:,:) ;距平
+    ; z_need1 和 z_RmvTime 时间维相同
+  ; printVarSummary(z_need2)
+  u_need2 = u_need1(date_ind_snow,:,:) ;降雪日u均值
+  v_need2 = v_need1(date_ind_snow,:,:) ;降雪日v均值
 
-; ; 5 读取降雪日 116日 挑出降雪日的日均值 日距平
-date_dir_snow ="/mnt/h/snow_sts_data/1981-2020/snow_date.txt" ;118
-datefile_snow = asciiread(date_dir_snow,-1,"string")
-YYYYMMDD_snow = str_get_field(datefile_snow(1:),1," ") 
-date_ind_snow=new(dimsizes(YYYYMMDD_snow), integer)
-do i=0,dimsizes(YYYYMMDD_snow)-1 
-	date_ind_snow(i) =str_match_ind(date_RmvTime, YYYYMMDD_snow(i))
-end do
-; print(date_ind_snow)
-
-; 挑均值和距平
-z_need2 = z_need1(date_ind_snow,:,:) ;均值
-z_need3 = z_RmvTime(date_ind_snow,:,:) ;距平
-  ; z_need1 和 z_RmvTime 时间维相同
-; printVarSummary(z_need2)
-u_need2 = u_need1(date_ind_snow,:,:) ;降雪日u均值
-v_need2 = v_need1(date_ind_snow,:,:) ;降雪日v均值
-
-
-
-; 合成
-
-z_avg=dim_avg_n_Wrap(z_need1, 0) ;TC日z平均场合成
-u_avg=dim_avg_n_Wrap(u_need1, 0) ;TC日u平均场合成
-v_avg=dim_avg_n_Wrap(v_need1, 0) ;TC日v平均场合成
-
-; z_avg=dim_avg_n_Wrap(z_need2, 0) ;降雪日z平均场合成
-; u_avg=dim_avg_n_Wrap(u_need2, 0) ;降雪日u平均场合成
-; v_avg=dim_avg_n_Wrap(v_need2, 0) ;降雪日v平均场合成
-; z_dev=dim_avg_n_Wrap(z_need3, 0) ;降雪日z距平场合成
+  ; 合成
+  z_avg=dim_avg_n_Wrap(z_need2, 0) ;降雪日z平均场合成
+  u_avg=dim_avg_n_Wrap(u_need2, 0) ;降雪日u平均场合成
+  v_avg=dim_avg_n_Wrap(v_need2, 0) ;降雪日v平均场合成
+  z_dev=dim_avg_n_Wrap(z_need3, 0) ;降雪日z距平场合成
 
 
 ;  绘图
 delete([/data0,data1,data2,z,u,v,\
        z_Day_mean,u_Day_mean,v_Day_mean/])
 
-wks = gsn_open_wks("eps", pic_dir+"TCday_"+"geo200")
+
+wks = gsn_open_wks("eps", pic_dir+"snowday_"+"geo200_Type"+tostring(typelabel))
+; wks = gsn_open_wks("eps", pic_dir+"TCday_"+"geo200")
 
 
 ;---Set up some map resources.
@@ -127,7 +134,7 @@ wks = gsn_open_wks("eps", pic_dir+"TCday_"+"geo200")
 
   mpres                       =res
   mpres@mpMinLatF             = 10.
-  mpres@mpMaxLatF             = 50.
+  mpres@mpMaxLatF             = 40.
   mpres@mpMinLonF             = 70
   mpres@mpMaxLonF             = 110
   mpres@gsnMajorLonSpacing    =10. 
@@ -138,7 +145,7 @@ wks = gsn_open_wks("eps", pic_dir+"TCday_"+"geo200")
   mpres@mpFillOn=False
 
   mpres@mpDataBaseVersion       = "MediumRes"
-  mpres@mpDataSetName           =  "/mnt/h/d/ChinaMap/Earth..4"
+  mpres@mpDataSetName           =  "/mnt/d/ChinaMap/Earth..4"
   mpres@mpOutlineSpecifiers     = (/"China:states"/)
 
 ;--------------叠加高度场--------------
@@ -177,9 +184,9 @@ cnres2                    = res
   cnres2@cnFillPalette       =colors
   ; cnres2@cnFillOpacityF      = 0.50   ; make partially transparent
   cnres2@cnLevelSelectionMode = "ManualLevels" 
-  ; cnres2@cnMinLevelValF      = 0
-  ; cnres2@cnMaxLevelValF      = 140
-  ; cnres2@cnLevelSpacingF      = 10
+  cnres2@cnMinLevelValF      = 20
+  cnres2@cnMaxLevelValF      = 200
+  cnres2@cnLevelSpacingF      = 20
 
   cnres2@lbLabelFontHeightF  = 0.02
   cnres2@lbBoxLinesOn        = True ; Label bar
@@ -221,19 +228,19 @@ map = gsn_csm_map(wks, mpres)
 contour_avg = gsn_csm_contour(wks,z_avg, cnres1)
 windPlot = gsn_csm_vector(wks, u_avg , v_avg , windRes)
 
-; contour_dev = gsn_csm_contour(wks,z_dev, cnres2)
-; overlay(map, contour_dev)
+contour_dev = gsn_csm_contour(wks,z_dev, cnres2)
+overlay(map, contour_dev)
 
 overlay(map, windPlot)
 overlay(map, contour_avg)
 
 
 ;高原轮廓线
-shp="/mnt/h/d/data/TPshp/DBATP/DBATP_Line.shp"  
+  shpfile  ="/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Polygon.shp"
   lnres                  = True     
   lnres@gsLineColor      ="orange"
   lnres@gsLineThicknessF = 6.0           ; 6x thickness  
-  shp_plot               = gsn_add_shapefile_polylines(wks,map,shp,lnres) 
+  shp_plot               = gsn_add_shapefile_polylines(wks,map,shpfile,lnres) 
 
 draw(map)
 frame(wks)

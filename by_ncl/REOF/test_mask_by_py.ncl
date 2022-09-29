@@ -3,14 +3,15 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 load "/mnt/f/snow_related/code/by_ncl/shapefile_utils.ncl"
 
-;  ncl /mnt/f/snow_related/code/by_ncl/REOF/plot.ncl
+; 测试分类
+;  ncl /mnt/f/snow_related/code/by_ncl/REOF/test_mask_by_py.ncl
 
 
 begin
 ;---Generate random data with an average of 10 and a stddev of 3.
   pic_dir ="/mnt/f/snow_related/pic/snow_TC/REOF/"
-  count=1
-  filename="time_reof_pre"
+  count=73 ;2南部型 3北部型
+  filename="time_tpmask_pre"
   file_dir="/mnt/f/snow_sts_data/REOF/"+filename+".nc" 
   data    = addfile(file_dir, "r")
   var     = data->pre(count,:,:)
@@ -25,15 +26,12 @@ begin
   ; lon@units      = "degrees_east"
   ; var&lat        = lat
   ; var&lon        = lon
-  print(max(var))
-  print(min(var))
+  ; print(max(var))
+  ; print(min(var))
 
-  ; ;mask掉高原以外的pw
-  shpfile  ="/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Polygon.shp"
-  var_mask =shapefile_mask_data(var,shpfile,True) 
 
 ;---- Begin to plot.
-wks = gsn_open_wks("eps",pic_dir+filename+tostring(count+1))
+wks = gsn_open_wks("x11",pic_dir+filename+tostring(count+1))
 
   ;---Set up some map resources.
   res                       = True
@@ -103,57 +101,12 @@ wks = gsn_open_wks("eps",pic_dir+filename+tostring(count+1))
 
 
 map = gsn_csm_map(wks, mpres)
-contour = gsn_csm_contour(wks,var_mask, cnres)
+contour = gsn_csm_contour(wks,var, cnres)
 overlay(map, contour)
-
-;画数据网格线
-  var_mask1=where(var_mask.lt.-0.2, var_mask,\
-  var_mask@_FillValue)
-  copy_VarCoords(var_mask, var_mask1)
-  var_mask2=where(var_mask.gt.0.2, var_mask,\
-  var_mask@_FillValue)
-  copy_VarCoords(var_mask, var_mask2)
-
-
-  ;;法一 cn图案填充 不中 网格没对齐
-  ; contour1 = gsn_csm_contour(wks,var_mask1, cnres1)
-  ; optres                      = True
-  ; optres@gsnShadeFillType     = "pattern"
-  ; optres@gsnShadeLow         = 5          
-  ; optres@gsnShadeHigh         = 5          ; stipple,gsnShadelow代表填充大小值之间的范围
-  ; optres@gsnShadeFillScaleF   = 2         ; add extra density
-  ; optres@gsnShadeFillDotSizeF = 0.006      ; make dots larger
-  ;如果要改变图案颜色在cnfillon=false，cnfillcolor可以设置
-  ; contour1 = gsn_contour_shade(contour1,-0.4,0.4, optres);<=-0.4 或>=0.4
-  ; overlay(map, contour1)
-
-
-  ;;法二 用cn网格线命令 中 
-  gridres                     =res
-  gridres@cnFillOn            =True
-  gridres@cnFillPalette       ="BlueRed"
-  gridres@cnFillMode          = "CellFill"
-  gridres@cnLevelSelectionMode = "ExplicitLevels"
-  gridres@cnLevels             = (/0/) 
-  gridres@cnFillColors          =(/-1,-1/)
-  gridres@cnInfoLabelOn         =False
-  gridres@lbLabelBarOn        = False
-  gridres@cnCellFillEdgeColor  = "blue"
-  contour1 = gsn_csm_contour(wks,var_mask1, gridres)
-  overlay(map, contour1)
-  gridres@cnCellFillEdgeColor  = "red"
-  contour2 = gsn_csm_contour(wks,var_mask2, gridres)
-  overlay(map, contour2)
-
-
-
-  ; ;法三 用坐标网格线命令 不中 会显示所有坐标网格
-  ; pres =True
-  ; pres@gsnCoordsAsLines  = True
-  ; gsn_coordinates(wks,map,var_mask1,pres)
 
 
 ;高原轮廓线
+  shpfile  ="/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Polygon.shp"
   lnres                  = True     
   lnres@gsLineColor      ="orange"
   lnres@gsLineThicknessF = 4.0           ; 6x thickness          ; 6x thickness  

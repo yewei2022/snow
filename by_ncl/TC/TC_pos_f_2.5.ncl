@@ -2,6 +2,7 @@
 ; 参考 scatter_10.ncl ; polyg_4.ncl 
 ;https://www.ncl.ucar.edu/Applications/scatter.shtml
 ;https://www.ncl.ucar.edu/Applications/polyg.shtml
+; https://www.ncl.ucar.edu/Applications/raster.shtml
 ; 网格分辨率2.5*2.5
 ;  ncl /mnt/f/snow_related/code/by_ncl/TC/TC_pos_f_2.5.ncl
 
