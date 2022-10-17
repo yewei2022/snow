@@ -117,7 +117,7 @@ level@units="Pa"
 ;   eqt_RmvTime  = dim_rmvmean_n_Wrap(eqt_need1,0)
 
 ;   ; 读取降雪日 116日 挑出降雪日的日均值 日距平
-;   date_dir_snow ="/mnt/f/snow_sts_data/REOF/spa_index.txt" ;118
+;   date_dir_snow ="/mnt/f/snow_sts_data/REOF/spa_index.txt" ;75
 ;   datefile_snow = asciiread(date_dir_snow,-1,"string")
 ;   YYYYMMDD_snow = str_get_field(datefile_snow(1:),1," ") 
 ;   type          = str_get_field(datefile_snow(1:),4," ")
