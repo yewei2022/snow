@@ -1,0 +1,67 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Dec  1 19:17:14 2021
+
+@author: Lenovo
+"""
+
+#读取BOB年月日信息,转换成BJT，存储时间，经纬度信息
+import os
+import datetime
+import pandas as pd
+
+# test time
+# time1 = datetime.datetime.strptime('2018010106', '%Y%m%d%H') #字符串变时间
+# # print(time1)
+# time=time1+datetime.timedelta(days=1)
+# time_str=time.strftime('%Y%m%d%H') #时间变字符串
+# print(time_str)
+
+#%% step 1  读time，tc_id
+utc = []
+tc_id   = []
+lat_tc=[]
+lon_tc=[]
+wind=[]
+path='F:\\snow_sts_data\\BOB\\'
+f_list = os.listdir(path)  # 得到文件夹下的所有文件名称
+#print(len(f_list))
+
+for file in f_list:
+    filename1=path+file
+    #print(filename1)
+    with open(filename1, 'r', encoding='UTF-8') as f1:
+        lines = f1.readlines()  # 按行给lines
+        for line in lines:
+            data=line.split(',')
+            tc_id.append(file[3:9])
+            utc.append(data[2].strip())
+            # tc_id.append(data[2].strip()[0:4]+data[1].strip())
+            lat_tc.append(float(data[6][0:4].strip())*0.1) #unit 1.0 degree
+            lon_tc.append(float(data[7][0:5].strip())*0.1)
+            wind.append(data[8].strip())
+
+            
+#%%  step 2  transforms UTC into BJT
+bjt=[]
+for i in utc:
+    time1= datetime.datetime.strptime(i, '%Y%m%d%H') #字符串变时间
+    time2=time1+datetime.timedelta(hours=8) #往后8h
+    bjt.append(time2.strftime('%Y%m%d%H')) #时间变字符串
+    
+#%%  step 3   写入文件
+tc_ymd_frame=pd.DataFrame(zip(tc_id,bjt,lon_tc,lat_tc,wind),
+                          columns=['tc_id','bjt','lon_tc','lat_tc','wind'])
+
+tc_ymd_frame['lat_tc'] =tc_ymd_frame['lat_tc'].apply(lambda x: format(x, '.1f'))
+tc_ymd_frame['lon_tc'] =tc_ymd_frame['lon_tc'].apply(lambda x: format(x, '.1f'))
+# 去重 因为有些日子不止一个风暴影响，所以需满足两个条件
+# tc_ymd_info=tc_ymd_frame.drop_duplicates(["bjt","tc_id"], 
+#                                          keep='first').reset_index(drop=True)
+# 以上去重是有问题的，比如1999605和199606有重合时间，去重保留了199605，
+# 但是有影响的确实199606 改为以下
+tc_ymd_info=tc_ymd_frame.drop_duplicates(["bjt","tc_id","lon_tc","lat_tc"], 
+                                         keep='first').reset_index(drop=True)
+tc_ymd_info.to_csv("F:\\snow_sts_data\\TC\\BoB_ymdh_bjt_lon_lat.txt",index = False,
+           sep='\t',encoding = "utf-8")
+        
