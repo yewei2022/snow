@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jan  7 20:01:38 2022
-
+K均值聚类 TC路径
+结果保存至all_tc_label.txt tp_tc_label.txt extrm_tc_label.txt
 @author: Lenovo
 """
 
-#%% K均值聚类 结果保存至all_tc_label.txt tp_tc_label.txt extrm_tc_label.txt
+#%% 数据处理
 
 import pandas as pd
 import math
@@ -67,14 +68,8 @@ dm=df_zs.reset_index() #为了下一步
 traj = df_zs 
 # init=initdf
 
-km = KMeans(n_clusters=3,random_state=150)#构造聚类器,random_state=150
 
-# km = KMeans(n_clusters=3,init=init,n_init=1,random_state=150)#构造聚类器,random_state=150
-km.fit(traj)#聚类,init=init,n_init=1
-# label = km.labels_ #获取聚类标签
-label=km.predict(traj)#分组结果
-
-# # #测试 聚类为2类最优 S局部最大，SSE拐点 绘图
+#%% # 测试分为几类合适 聚类为2类最优 S局部最大，SSE拐点 绘图
 # 参考https://blog.csdn.net/weixin_43718084/article/details/90273463
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import MultipleLocator
@@ -105,7 +100,7 @@ ax.xaxis.set_minor_locator(x_minor_locator)
 # plt.text(1.56,0.319,'(a)', fontsize=13,color = 'black')
 
 
-pic_dir="F:\\snow_related\\pic\\tc\\"
+pic_dir="F:\\snow_related\\pic\\TC\\track\\"
 plt.savefig(pic_dir+'路径分类轮廓系数.jpg', dpi=1000, bbox_inches = 'tight')
 plt.show()
 
@@ -134,41 +129,46 @@ ax.xaxis.set_minor_locator(x_minor_locator)
 
 plt.savefig(pic_dir+'路径分类误差平方和.jpg', dpi=1000, bbox_inches = 'tight')
 plt.show()
-    
+  
+#%% 分类
+
+km = KMeans(n_clusters=3,random_state=150)#构造聚类器,random_state=150
+
+# km = KMeans(n_clusters=3,init=init,n_init=1,random_state=150)#构造聚类器,random_state=150
+km.fit(traj)#聚类,init=init,n_init=1
+# label = km.labels_ #获取聚类标签
+label=km.predict(traj)#分组结果  
 
 dm['label']=label
 num_label_all=dm['label'].value_counts()
+print('所有TC分类',num_label_all)
+dm.to_csv("F:\\snow_sts_data\\TC\\all_tc_label.txt",index = False,
+                sep=' ',columns=['tc_id','label'])
 
 tp_tc=pd.read_table("F:\\snow_sts_data\\TC\\tc_date_infl.txt",sep=' ')
 tp_tc.sort_values(by='tc_id', ascending=True,inplace=True)
-
 tc_need =dm[dm.tc_id.isin(tp_tc.tc_id)]
 tc_need.set_index('tc_id', inplace=True) # column 改为 index
 tp_tc.set_index('tc_id', inplace=True)
 d1=pd.concat([tp_tc,tc_need],axis=1)
 d2=d1.reset_index()
 d3=d2[['tc_id','label']]
-
 num_label_tp=d3['label'].value_counts()
-
-extrm_tc=pd.read_table("F:\\snow_sts_data\\TC\\tc_date_infl_extrm.txt",sep=' ')
-extrm_tc.sort_values(by='tc_id', ascending=True,inplace=True)
-extrm_need =dm[dm.tc_id.isin(extrm_tc.tc_id)]
-extrm_need.set_index('tc_id', inplace=True) # column 改为 index
-extrm_tc.set_index('tc_id', inplace=True)
-d11=pd.concat([extrm_tc,extrm_need],axis=1)
-d22=d11.reset_index()
-d33=d22[['tc_id','label']]
-num_label_extrm=d33['label'].value_counts()
-
-print('所有TC分类',num_label_all)
 print('影响TC分类',num_label_tp)
-print('极端影响分类',num_label_extrm)
+d3.to_csv("F:\\snow_sts_data\\TC\\tp_tc_label.txt",index = False,
+                sep=' ',columns=['tc_id','label'])
 
-# dm.to_csv("F:\\snow_sts_data\\TC\\all_tc_label.txt",index = False,
-#                 sep=' ',columns=['tc_id','label'])
-# d3.to_csv("F:\\snow_sts_data\\TC\\tp_tc_label.txt",index = False,
-#                 sep=' ',columns=['tc_id','label'])
+
+# extrm_tc=pd.read_table("F:\\snow_sts_data\\TC\\tc_date_infl_extrm.txt",sep=' ')
+# extrm_tc.sort_values(by='tc_id', ascending=True,inplace=True)
+# extrm_need =dm[dm.tc_id.isin(extrm_tc.tc_id)]
+# extrm_need.set_index('tc_id', inplace=True) # column 改为 index
+# extrm_tc.set_index('tc_id', inplace=True)
+# d11=pd.concat([extrm_tc,extrm_need],axis=1)
+# d22=d11.reset_index()
+# d33=d22[['tc_id','label']]
+# num_label_extrm=d33['label'].value_counts()
+# print('极端影响分类',num_label_extrm)
 # d33.to_csv("F:\\snow_sts_data\\TC\\extrm_tc_label.txt",index = False,
 #                 sep=' ',columns=['tc_id','label'])
 
@@ -176,19 +176,19 @@ print('极端影响分类',num_label_extrm)
 
 #%% branch4 根据label，生成三类路径的文件目录
 
-# import pandas as pd
+import pandas as pd
 
-# catalog=pd.read_table("F:\\snow_sts_data\\TC\\tp_tc_label.txt",sep='\s+')
-# catalog['prefix']='/mnt/f/snow_sts_data/BOB/bio'
-# catalog['suffix']='.txt'
-# catalog['filename']=catalog['prefix']+catalog['tc_id'].astype(str)\
-#     +catalog['suffix']
-# typeA=catalog[catalog['label']==0] 
-# typeB=catalog[catalog['label']==1]
-# typeC=catalog[catalog['label']==2] 
-# typeA.to_csv("F:\\snow_sts_data\\TC\\typeA_catalog.txt",index=False,
-#                 header=False,columns = ['filename'])
-# typeB.to_csv("F:\\snow_sts_data\\TC\\typeB_catalog.txt",index=False,
-#                 header=False,columns = ['filename'])
-# typeC.to_csv("F:\\snow_sts_data\\TC\\typeC_catalog.txt",index=False,
-#                 header=False,columns = ['filename'])
+catalog=pd.read_table("F:\\snow_sts_data\\TC\\tp_tc_label.txt",sep='\s+')
+catalog['prefix']='/mnt/f/snow_sts_data/BOB/bio'
+catalog['suffix']='.txt'
+catalog['filename']=catalog['prefix']+catalog['tc_id'].astype(str)\
+    +catalog['suffix']
+typeA=catalog[catalog['label']==0] 
+typeB=catalog[catalog['label']==1]
+typeC=catalog[catalog['label']==2] 
+typeA.to_csv("F:\\snow_sts_data\\TC\\typeA_catalog.txt",index=False,
+                header=False,columns = ['filename'])
+typeB.to_csv("F:\\snow_sts_data\\TC\\typeB_catalog.txt",index=False,
+                header=False,columns = ['filename'])
+typeC.to_csv("F:\\snow_sts_data\\TC\\typeC_catalog.txt",index=False,
+                header=False,columns = ['filename'])

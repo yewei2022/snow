@@ -56,7 +56,7 @@ dot_mon       = str_get_field(snow_files(1:),5," ")
 wind_snow     = stringtoint(str_get_field(snow_files(1:),7," "))
 
 
-wks = gsn_open_wks("eps", pic_dir+"track"+file_name(count))
+wks = gsn_open_wks("x11", pic_dir+"track"+file_name(count))
   gsn_define_colormap(wks, "wgne15")       ; send graphics to PNG file
 colours=(/4,7,12,13,16,14,15/)
 
@@ -136,8 +136,10 @@ do i=0,dimsizes(wind_dot)-1
   dum_tc(i) = gsn_add_text(wks,map,"~F37~p",lon_dot(i),lat_dot(i),txres) 
 end do
 
-; 高原轮廓线
-  shp_line="/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  
+; ; 高原轮廓线
+  ; shp_line="/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  
+  shp_line="/mnt/f/snow_sts_data/shp/l/GSHHS_l_L1.shp"  
+ 
   lnres                  = True     
   lnres@gsLineColor      ="orange"
   lnres@gsLineThicknessF = 8.0           ; 6x thickness          ; 6x thickness  
