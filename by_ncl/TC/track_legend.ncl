@@ -1,5 +1,5 @@
 ;画个关于强度的图例
- ; ncl /mnt/f/snow_related/code/by_ncl/track_legend.ncl
+ ; ncl /mnt/f/snow_related/code/by_ncl/TC/track_legend.ncl
 ;
 ; These files are loaded by default in NCL V6.2.0 and newer
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
@@ -8,7 +8,7 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 
 begin
 
-pic_dir ="/mnt/f/snow_related/pic/tc/"
+pic_dir ="/mnt/f/snow_related/pic/TC/track/"
 wks  = gsn_open_wks("eps",pic_dir+"track_legend")  
 gsn_define_colormap(wks, "wgne15")
 
