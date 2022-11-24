@@ -90,6 +90,6 @@ lbres@lgPerimColor      = "white"
 lbres@lbFillColors       = colors(0)
 gsn_labelbar_ndc(wks,1,"All TCs",0.2,0.8,lbres) ; draw left labelbar column
 lbres@lbFillColors       = colors(1)
-gsn_labelbar_ndc(wks,1,"TCs influencing TP",0.41,0.8,lbres) ; draw left labelbar column
+gsn_labelbar_ndc(wks,1,"TCs affecting TP",0.41,0.8,lbres) ; draw left labelbar column
 frame(wks)      
 end

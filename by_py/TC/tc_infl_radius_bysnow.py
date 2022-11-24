@@ -13,71 +13,71 @@ path_tc="F:\\snow_sts_data\\TC\\BoB_ymdh_bjt_lon_lat.txt"
     
 #%% step 1 计算风暴影响半径
 
-from math import sin,radians,cos,asin,sqrt
-import numpy as np
+# from math import sin,radians,cos,asin,sqrt
+# import numpy as np
 
-def SphereDistance(lon1, lat1, lon2, lat2):
-    radius = 6371.0 # radius of Earth, unit:KM
-    # degree to radians
-    lon1, lat1,lon2, lat2 = map(radians,[lon1, lat1,lon2, lat2])
-    dlon = lon2 -lon1
-    dlat = lat2 -lat1
-    arg  = sin(dlat*0.5)**2 +  \
-            cos(lat1)*cos(lat2)*sin(dlon*0.5)**2
-    dist = 2.0 * radius * asin(sqrt(arg))
-    return dist
+# def SphereDistance(lon1, lat1, lon2, lat2):
+#     radius = 6371.0 # radius of Earth, unit:KM
+#     # degree to radians
+#     lon1, lat1,lon2, lat2 = map(radians,[lon1, lat1,lon2, lat2])
+#     dlon = lon2 -lon1
+#     dlat = lat2 -lat1
+#     arg  = sin(dlat*0.5)**2 +  \
+#             cos(lat1)*cos(lat2)*sin(dlon*0.5)**2
+#     dist = 2.0 * radius * asin(sqrt(arg))
+#     return dist
 
-# 函数：根据站点经纬度，时间，返回当天各个时次距离的平均值
-def ave_dist(station,sta_time,sta_lat,sta_lon,sta_tc_id,path_tc):
-    tc_save = [] #保存影响时刻的台风信息
-    dist_info=[] #保存各影响时刻的距离
-    tc_info =pd.read_table(path_tc,sep = "\t")
-    tc_id=tc_info['tc_id'].tolist()
-    yyyymmddhh=tc_info['bjt'].tolist()
-    lat_tc=tc_info['lat_tc'].tolist()
-    lon_tc=tc_info['lon_tc'].tolist()
-    N=len(lon_tc)
-    newLine = ['station','sta_lat','sta_lon','tc_id', 'time', 
-                'tc_lat', 'tc_lon']
-    for i in range(0,N):
-        if (str(yyyymmddhh[i])[0:8]==sta_time) & (tc_id[i]==sta_tc_id):
-            dist_tc2sta = SphereDistance(lon_tc[i],lat_tc[i],sta_lon,sta_lat)                    
-            newLine[0] = station
-            newLine[1] = sta_lat
-            newLine[2] = sta_lon                
-            newLine[3] = tc_id[i]
-            newLine[4] = str(yyyymmddhh[i])
-            newLine[5] = lat_tc[i]
-            newLine[6] = lon_tc[i]
-            # print(newLine)
-            if newLine not in tc_save:
-                tc_save.append(newLine)
-                dist_info.append(dist_tc2sta)
-    if len(tc_save)>0:
-        dist_ave=np.mean(dist_info)
-        print(tc_save)
-        print(dist_info)
-        print(dist_ave)
-    else:
-        dist_ave=32700
-        print(str(station)+'在'+str(sta_time)+'期间无风暴记录！')
-    return dist_ave
+# # 函数：根据站点经纬度，时间，返回当天各个时次距离的平均值
+# def ave_dist(station,sta_time,sta_lat,sta_lon,sta_tc_id,path_tc):
+#     tc_save = [] #保存影响时刻的台风信息
+#     dist_info=[] #保存各影响时刻的距离
+#     tc_info =pd.read_table(path_tc,sep = "\t")
+#     tc_id=tc_info['tc_id'].tolist()
+#     yyyymmddhh=tc_info['bjt'].tolist()
+#     lat_tc=tc_info['lat_tc'].tolist()
+#     lon_tc=tc_info['lon_tc'].tolist()
+#     N=len(lon_tc)
+#     newLine = ['station','sta_lat','sta_lon','tc_id', 'time', 
+#                 'tc_lat', 'tc_lon']
+#     for i in range(0,N):
+#         if (str(yyyymmddhh[i])[0:8]==sta_time) & (tc_id[i]==sta_tc_id):
+#             dist_tc2sta = SphereDistance(lon_tc[i],lat_tc[i],sta_lon,sta_lat)                    
+#             newLine[0] = station
+#             newLine[1] = sta_lat
+#             newLine[2] = sta_lon                
+#             newLine[3] = tc_id[i]
+#             newLine[4] = str(yyyymmddhh[i])
+#             newLine[5] = lat_tc[i]
+#             newLine[6] = lon_tc[i]
+#             # print(newLine)
+#             if newLine not in tc_save:
+#                 tc_save.append(newLine)
+#                 dist_info.append(dist_tc2sta)
+#     if len(tc_save)>0:
+#         dist_ave=np.mean(dist_info)
+#         print(tc_save)
+#         print(dist_info)
+#         print(dist_ave)
+#     else:
+#         dist_ave=32700
+#         print(str(station)+'在'+str(sta_time)+'期间无风暴记录！')
+#     return dist_ave
 
 
-info=pd.read_table("F:\\snow_sts_data\\1981-2020\\snow_pre_gss.txt",sep='\s+',
-                    usecols=['station','time','lon','lat','tc_id'])
-station=info['station'].tolist()
-sta_lat=info['lat'].tolist()
-sta_lon=info['lon'].tolist()
-sta_time=info['time'].tolist()
-sta_tc_id=info['tc_id'].tolist()
-npts=len(station)
-dist_list=[]
-for i in range(0,npts):
-    dist_list.append(ave_dist(station[i],str(sta_time[i]),sta_lat[i],
-                              sta_lon[i],sta_tc_id[i],path_tc))
-info['dist']=dist_list
-info.to_csv(path_save+'tcdist.txt',sep='\t',index=False,na_rep=32700)
+# info=pd.read_table("F:\\snow_sts_data\\1981-2020\\snow_pre_gss.txt",sep='\s+',
+#                     usecols=['station','time','lon','lat','tc_id'])
+# station=info['station'].tolist()
+# sta_lat=info['lat'].tolist()
+# sta_lon=info['lon'].tolist()
+# sta_time=info['time'].tolist()
+# sta_tc_id=info['tc_id'].tolist()
+# npts=len(station)
+# dist_list=[]
+# for i in range(0,npts):
+#     dist_list.append(ave_dist(station[i],str(sta_time[i]),sta_lat[i],
+#                               sta_lon[i],sta_tc_id[i],path_tc))
+# info['dist']=dist_list
+# info.to_csv(path_save+'tcdist.txt',sep='\t',index=False,na_rep=32700)
 
 
 
@@ -115,7 +115,7 @@ print('对高原降雪的影响距离:',df_ave1)
 sns.set_style('ticks')
 # 图表风格设置
 # 风格选择包括："white", "dark", "whitegrid", "darkgrid", "ticks"
-plt.figure(figsize=(4,5))#绘制画布
+plt.figure(figsize=(4,4))#绘制画布
 sns.distplot(df_tp1['dist'],hist = False,kde = True,rug = True,
               rug_kws = {'color':'g','lw':0.1,'alpha':0.5,'height':0.03} ,
               # 设置数据频率分布颜色#控制是否显示观测的小细条（边际毛毯）

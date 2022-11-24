@@ -84,13 +84,16 @@ colors=(/4,7,12,13,16,14,15/)
   Tres@gsnFrame=False
   Tres@tiYAxisString="Month"
   Tres@tiXAxisString="Year"
-  Tres@tiXAxisFontHeightF=0.018
-  Tres@tiYAxisFontHeightF=0.018
+  Tres@tiXAxisFontHeightF=0.015
+  Tres@tiYAxisFontHeightF=0.015
+
+  Tres@vpHeightF           = .4                    ;
+  Tres@vpWidthF            = .5
 
 
   ; Tres@tmXBLabelAngleF = 48.   ;角度
   Tres@tmEqualizeXYSizes =True
-  Tres@tmXBLabelFontHeightF = 0.018 ; x轴标签字号
+  Tres@tmXBLabelFontHeightF = 0.015 ; x轴标签字号
 
   Tres@tmXMajorGrid                = True          ; implement x grid 
   Tres@tmXMajorGridThicknessF      = 1.0           ; 2.0 is default
@@ -126,10 +129,10 @@ draw(plot(0))
   txres@txFontHeightF = 0.015
 
 
-  xleg=fspan(0.15, 0.7, 7)
+  xleg=fspan(0.15, 0.59, 7)
   xleg=xleg+0.06
   xtxt=xleg+0.03
-  yleg=fspan(0.18, 0.18, 7)
+  yleg=fspan(0.41, 0.41, 7)
   yleg=yleg-0.1
   ytxt = yleg   ; strings.
 

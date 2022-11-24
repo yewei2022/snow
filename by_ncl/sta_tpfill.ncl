@@ -22,12 +22,12 @@ begin
   npts = numAsciiRow(filepath+name+".txt")-1 ;获取行数-1=站点数
 
 ;读地形文件
-  topo        = addfile("/mnt/h/d/data/other/ETOPO2v2c_f4.nc", "r")
+  topo        = addfile("/mnt/d/case/data/other/ETOPO2v2c_f4.nc", "r")
   elev        = topo->z({0:50},{70:110}) 
   ; printVarSummary(elev)
   ; exit 
-  lat_topo    = topo->x({70:110}) 
-  lon_topo    = topo->y({0:50}) 
+  lon_topo    = topo->x({70:110}) 
+  lat_topo    = topo->y({0:50}) 
   lat_topo!0     = "lat"
   lon_topo!0     = "lon"
   lat_topo@units = "degrees_north"
@@ -42,7 +42,7 @@ begin
   elev&lon  = lon_topo
 ;===========================================================================
 ; Begin plotting section.
-  wks = gsn_open_wks("eps",pic_path+"sta_tpfill")              ; send graphics to PNG file
+  wks = gsn_open_wks("x11",pic_path+"sta_tpfill")              ; send graphics to PNG file
 
 ;---Set up some map resources.
   res                       = True

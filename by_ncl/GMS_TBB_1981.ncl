@@ -4,7 +4,7 @@
 ;根据tbb范围划定站点大概经纬度框，再选取tbb<=-20的站点
 ;labelbar的标标题设置参考 
 ;http://www.ncl.ucar.edu/Document/Graphics/Resources/lb.shtml#lbTitlePosition
-;  ncl /mnt/f/snow_related/code/by_ncl/GMS_tbb.ncl
+;  ncl /mnt/f/snow_related/code/by_ncl/GMS_TBB_1981.ncl
 
 ;---------------------------------------------------
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
@@ -16,9 +16,9 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/contrib/cd_string.ncl"
 begin
 
 ;1 读TBB并处理----------------------------------
-  data_dir       ="/mnt/h/JMA-TBB-1981-1997/grd/"
+  data_dir       ="/mnt/h/recovery/TBB-1981-1997/unknown_format/tbb"
   file_name      ="1981.grd"   
-  pic_dir        ="/mnt/f/snow_related/pic/tbb/" 
+  pic_dir        ="/mnt/f/snow_related/pic/tbb/test/" 
 
   ntim           =2920
   nlat           =120
@@ -68,7 +68,7 @@ begin
 
 
 ;---- Begin to plot.
-wks = gsn_open_wks("eps",pic_dir+str_time(end_n))
+wks = gsn_open_wks("X11",pic_dir+"test_"+str_time(end_n))
 
 
 res = True

@@ -82,7 +82,7 @@ begin
   wks = gsn_open_wks("eps",pic_dir+"wavelet2")             ; send graphics to PNG file
 
   res                     = True                  ; plot mods desired
-  res@gsnMaximize         = True
+  ; res@gsnMaximize         = True
   res@gsnDraw             = False                 ; Do not draw plot
   res@gsnFrame            = False                 ; Do not advance frome
   res@tmXTOn  =False
@@ -91,7 +91,7 @@ begin
   res@tiYAxisFontHeightF   = 0.018
   res@gsnStringFontHeightF = 0.015
   res@vpHeightF           = .4                    ;
-  res@vpWidthF            = .7
+  res@vpWidthF            = .5
   res@trYReverse          = True                  ; reverse y-axis
   res@tmXBLabelAngleF     = 45.   ;
 
@@ -142,40 +142,39 @@ yval=ispan(0, 14, 2)
 
 
 
-; 绘图 wavelet1
-  ; plot_hatch_def = gsn_csm_contour(wks,power({1:15},:),res1)
+; ; 绘图 wavelet1
+;   plot_hatch_def = gsn_csm_contour(wks,power({1:15},:),res1)
 
-  ; iplot_hatch_def = gsn_csm_contour(wks,SIG({1:15},:),res2)
+;   iplot_hatch_def = gsn_csm_contour(wks,SIG({1:15},:),res2)
 
-  ; opt                      = True
-  ; opt@gsnShadeHigh         = 17           ; cross hatch pattern
-  ; opt@gsnShadeFillType     = "pattern"
-  ; opt@gsnShadeFillScaleF   = 1         ; add extra density
-  ; opt@gsnShadeFillDotSizeF = 0.006      ; make dots larger
-  ; iplot_hatch_def = gsn_contour_shade(iplot_hatch_def,0, 1, opt)
+;   opt                      = True
+;   opt@gsnShadeHigh         = 17           ; cross hatch pattern
+;   opt@gsnShadeFillType     = "pattern"
+;   opt@gsnShadeFillScaleF   = 1         ; add extra density
+;   opt@gsnShadeFillDotSizeF = 0.006      ; make dots larger
+;   iplot_hatch_def = gsn_contour_shade(iplot_hatch_def,0, 1, opt)
 
-  ; overlay(plot_hatch_def,iplot_hatch_def)
+;   overlay(plot_hatch_def,iplot_hatch_def)
 
-  ; draw(plot_hatch_def)
-  ; polyres                  = True
-  ; polyres@gsLineThicknessF = 4.0
-  ; polyres@gsLineColor      ="black"
-  ; polyres@gsLineDashPattern=0
-  ; gsn_polyline(wks,plot_hatch_def,timeo,w@coi,polyres) ; add polyline
-  ; frame(wks)
+;   draw(plot_hatch_def)
+;   polyres                  = True
+;   polyres@gsLineThicknessF = 4.0
+;   polyres@gsLineColor      ="black"
+;   polyres@gsLineDashPattern=0
+;   gsn_polyline(wks,plot_hatch_def,timeo,w@coi,polyres) ; add polyline
+;   frame(wks)
 
 
 
 ; 绘图 wavelet2
-
   gsn_define_colormap(wks, "temp_19lev")       ; send graphics to PNG file
   color3=(/17/)
   res3   = True
-  res3@gsnMaximize = True
+  ; res3@gsnMaximize = True
   res3@gsnDraw  = False
   res3@gsnFrame = False
   res3@vpHeightF  = 0.4        ; Changes the aspect ratio
-  res3@vpWidthF   = 0.7
+  res3@vpWidthF   = 0.5
   res3@tmXTOn      = False ;关刻度
   res3@tmYROn      = False
   res3@tmXBMode="Manual"   

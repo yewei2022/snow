@@ -63,8 +63,8 @@ plotxy =new(3, graphic)
   res@gsnMaximize = True
   res@gsnDraw  = False
   res@gsnFrame = False
-  res@vpHeightF  = 0.1        ; Changes the aspect ratio
-  res@vpWidthF   = 0.3
+  res@vpHeightF           = .2                    ;
+  res@vpWidthF            = .5
   res@tmXTOn      = False ;关刻度
   res@tmXBLabelAngleF     = 45.   ;
   res@tmXBMode="Manual"   
@@ -74,7 +74,7 @@ plotxy =new(3, graphic)
   res@trXMaxF   = 2021      
   res@xyLineThicknesses =(/5,4/) ;画两条线 
   res@tiYAxisFont =22
-  res@gsnStringFontHeightF=0.006
+  res@gsnStringFontHeightF=0.012
   res@gsnLeftStringOrthogonalPosF=-0.125
   res@gsnLeftStringParallelPosF=0.02
   res@gsnRightStringOrthogonalPosF=-0.125
@@ -84,7 +84,7 @@ plotxy =new(3, graphic)
   res13=res
   res13@tmYROn      = False
   ; res13@xyDashPattern=lineDashPattern(0)
-  res13@tiYAxisString = "Number of TCs" ; y-axis label
+  res13@tiYAxisString = "TC frequency" ; y-axis label
 
 
   res24=res
@@ -116,10 +116,10 @@ plotxy =new(3, graphic)
   res2@gsnLeftString="y="+tostring(b1)+"x+"+tostring(b0)+""
   res2@gsnRightString=rate_sig
 
-  res2@tiYAxisString = "Rate" ; y-axis label
+  res2@tiYAxisString = "Relative frequency" ; y-axis label
   res2@xyLineColor=colors(1) ;蓝色，TC影响
   res2@tiYAxisFontColor=colors(1)
-  res2@trYMaxF =max(rate)+0.1
+  res2@trYMaxF =max(rate)+0.15
   plotxy(1)=gsn_csm_xy(wks,year,rate_arry,res2)
 
 
