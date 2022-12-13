@@ -39,7 +39,7 @@ colors=(/5,7,13/)
   res   = True
   res@gsnDraw  = False
   res@gsnFrame = False
-  res@vpHeightF  = 0.5       ; Changes the aspect ratio
+  res@vpHeightF  = 0.4       ; Changes the aspect ratio
   res@vpWidthF   = 0.6
   res@tmXBLabelAngleF     = 45.   ;
   res@tmXBMode          = "Explicit"         ; explicit labels
@@ -125,11 +125,11 @@ lbres@lbPerimOn          = False
 lbres@lgPerimColor      = "white"
 lbres@lbFillColors       = colors(0)
 poslb1=0.120
-gsn_labelbar_ndc(wks,1,"SF",poslb1,0.23,lbres) ; draw left labelbar column
+gsn_labelbar_ndc(wks,1,"SF",poslb1,0.28,lbres) ; draw left labelbar column
 lbres@lbFillColors       = colors(1)
-gsn_labelbar_ndc(wks,1,"PA",poslb1+0.2,0.23,lbres) ; draw left labelbar column
+gsn_labelbar_ndc(wks,1,"PA",poslb1+0.2,0.28,lbres) ; draw left labelbar column
 lbres@lbFillColors       = colors(2)
-gsn_labelbar_ndc(wks,1,"SD",poslb1+0.4,0.23,lbres) ; draw left labelbar column
+gsn_labelbar_ndc(wks,1,"SD",poslb1+0.4,0.28,lbres) ; draw left labelbar column
 
 frame(wks) 
 end
