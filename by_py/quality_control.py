@@ -4,7 +4,7 @@ Created on Wed Apr 20 22:16:41 2022
 以数据连续性为原则（缺测率不超过10%），挑选高原站点
 用到的文件：snow_all.txt -记录是否降雪
 pre1981_2020.txt gss1981_2020.txt 40年所有站点的雨雪
-最终目的：得到确定的研究站点 tp_sta_info_by2014.txt
+最终目的：确定研究站点 after_quality_control 文件夹中的tp_sta_info_by2014.txt
 用于days.py 中筛选
 @author: Lenovo
 """
@@ -93,19 +93,20 @@ pos_df.to_csv("F:\\snow_sts_data\\after_quality_control\\tp_sta_info_by2014.txt"
               index = False,sep=',')
 
 
-#%% 这块其实可以不用做了
+#%% 这块其实可以不用做了 因为最终目的是筛选站点
 
-weath3=weather[weather.station.isin(final_sta)]
-pre3=pre[pre.station.isin(final_sta)]
-gss3=gss[gss.station.isin(final_sta)]
-weath3.drop(columns = ['count'],inplace = True)
-pre3.drop(columns = ['count'],inplace = True)
-gss3.drop(columns = ['count'],inplace = True)
+# weath3=weather[weather.station.isin(final_sta)]
+# pre3=pre[pre.station.isin(final_sta)]
+# gss3=gss[gss.station.isin(final_sta)]
+# weath3.drop(columns = ['count'],inplace = True)
+# pre3.drop(columns = ['count'],inplace = True)
+# gss3.drop(columns = ['count'],inplace = True)
 
-weath3.to_csv("F:\\snow_sts_data\\after_quality_control\\snow_1981_2020.txt",
-              index = False,sep=' ',na_rep=32700)
-pre3.to_csv("F:\\snow_sts_data\\after_quality_control\\pre_1981_2020.txt",
-              index = False,sep=' ',na_rep=32700)
-gss3.to_csv("F:\\snow_sts_data\\after_quality_control\\gss_1981_2020.txt",
-              index = False,sep=' ',na_rep=32700)
+# weath3.to_csv("F:\\snow_sts_data\\after_quality_control\\snow_1981_2020.txt",
+#               index = False,sep=' ',na_rep=32700)
+# pre3.to_csv("F:\\snow_sts_data\\after_quality_control\\pre_1981_2020.txt",
+#               index = False,sep=' ',na_rep=32700)
+# gss3.to_csv("F:\\snow_sts_data\\after_quality_control\\gss_1981_2020.txt",
+#               index = False,sep=' ',na_rep=32700)
+
 

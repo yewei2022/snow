@@ -64,9 +64,9 @@ info2=pd.concat([sta,df3,info1],axis=1)
 info3=info2.reset_index()
 info3.loc[:,'mean']=info3['snow']/40
 
-#写入文件
-info3.to_csv("F:\\snow_sts_data\\1981-2020\\sta_avg_days.txt",
-                    index = False,sep=' ',na_rep=32700)
+# #写入文件
+# info3.to_csv("F:\\snow_sts_data\\1981-2020\\sta_avg_days.txt",
+#                     index = False,sep=' ',na_rep=32700)
 
 # 测试 ======================================================================
 # # 测试某些有snow但p为nan的站点

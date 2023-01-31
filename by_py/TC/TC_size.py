@@ -346,7 +346,7 @@ print('影响期间样本α=0的样本数: \n{}'.format(len(alpha_infl[alpha_inf
 #%%  统计alpha不等于0的alpha样本
 
 alpha_all_ave=theta_alpha_all['alpha'].mean() 
-alpha_infl_ave=theta_alpha_all['alpha'].mean() 
+alpha_infl_ave=theta_alpha_infl['alpha'].mean() 
 
 theta_alpha_all.loc[:,'count_all']=1
 theta_alpha_infl.loc[:,'count_infl']=1
@@ -361,8 +361,8 @@ alpha_freq1.loc[:,'per_infl']=alpha_freq1['count_infl']/len(theta_alpha_infl)
 alpha_freq1['count_all'] =alpha_freq1['count_all'].apply(lambda x: format(x, '.0f'))
 alpha_freq1['count_infl'] =alpha_freq1['count_infl'].apply(lambda x: format(x, '.0f'))
 
-alpha_freq1.to_csv("F:\\snow_sts_data\\TC\\TC_alpha_freq.txt",index = False,
-                  na_rep=32700,sep=' ')
+# alpha_freq1.to_csv("F:\\snow_sts_data\\TC\\TC_alpha_freq.txt",index = False,
+#                   na_rep=32700,sep=' ')
 
 
 #%%  统计alpha不等于0的theta样本

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Sep 28 11:15:47 2022
-计算0C高度
+计算降雪日站点的0C高度
 @author: Lenovo
 """
 

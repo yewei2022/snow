@@ -37,9 +37,9 @@ path_tc="F:\\snow_sts_data\\TC\\BoB_ymdh_bjt_lon_lat.txt"
 #     lat_tc=tc_info['lat_tc'].tolist()
 #     lon_tc=tc_info['lon_tc'].tolist()
 #     N=len(lon_tc)
-#     newLine = ['station','sta_lat','sta_lon','tc_id', 'time', 
-#                 'tc_lat', 'tc_lon']
 #     for i in range(0,N):
+#         newLine = ['station','sta_lat','sta_lon','tc_id', 'time', 
+#                     'tc_lat', 'tc_lon']
 #         if (str(yyyymmddhh[i])[0:8]==sta_time) & (tc_id[i]==sta_tc_id):
 #             dist_tc2sta = SphereDistance(lon_tc[i],lat_tc[i],sta_lon,sta_lat)                    
 #             newLine[0] = station

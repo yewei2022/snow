@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Dec 22 10:23:29 2021
-# 根据降雪计算风暴影响半径
+计算风暴影响半径
+保存风暴影响降雪站点样本
 @author: Lenovo
 """
 
@@ -37,9 +38,9 @@ path_tc="F:\\snow_sts_data\\TC\\BoB_ymdh_bjt_lon_lat.txt"
 #     lat_tc=tc_info['lat_tc'].tolist()
 #     lon_tc=tc_info['lon_tc'].tolist()
 #     N=len(lon_tc)
-#     newLine = ['station','sta_lat','sta_lon','tc_id', 'time', 
-#                 'tc_lat', 'tc_lon']
 #     for i in range(0,N):
+#         newLine = ['station','sta_lat','sta_lon','tc_id', 'time', 
+#                     'tc_lat', 'tc_lon']
 #         if (str(yyyymmddhh[i])[0:8]==sta_time) & (tc_id[i]==sta_tc_id):
 #             dist_tc2sta = SphereDistance(lon_tc[i],lat_tc[i],sta_lon,sta_lat)                    
 #             newLine[0] = station
@@ -64,6 +65,9 @@ path_tc="F:\\snow_sts_data\\TC\\BoB_ymdh_bjt_lon_lat.txt"
 #     return dist_ave
 
 
+
+#%% 挑选风暴影响降雪站点
+
 # info=pd.read_table("F:\\snow_sts_data\\1981-2020\\snow_pre_gss.txt",sep='\s+',
 #                     usecols=['station','time','lon','lat','tc_id'])
 # station=info['station'].tolist()
@@ -77,13 +81,13 @@ path_tc="F:\\snow_sts_data\\TC\\BoB_ymdh_bjt_lon_lat.txt"
 #     dist_list.append(ave_dist(station[i],str(sta_time[i]),sta_lat[i],
 #                               sta_lon[i],sta_tc_id[i],path_tc))
 # info['dist']=dist_list
-# info.to_csv(path_save+'tcdist.txt',sep='\t',index=False,na_rep=32700)
+# info.to_csv(path_save+'tcdist_bysnow.txt',sep='\t',index=False,na_rep=32700)
 
 
 
 #%% step 2 确定风暴半径平均值 分位数 
 
-# df_tp   = pd.read_table(path_save+'tcdist.txt',sep = "\t",na_values=32700)
+# df_tp   = pd.read_table(path_save+'tcdist_bysnow.txt',sep = "\t",na_values=32700)
 # df_ave      =df_tp['dist'].mean() 
 # print('风暴影响半径平均值:',df_ave)
 
@@ -99,62 +103,62 @@ path_tc="F:\\snow_sts_data\\TC\\BoB_ymdh_bjt_lon_lat.txt"
 
 #%% step 2.1 降雪期间 极端降雪期间 距离的 概率密度图
 
-import numpy as np
-# from scipy import stats, integrate
-import seaborn as sns
-import matplotlib.pyplot as plt
+# import numpy as np
+# # from scipy import stats, integrate
+# import seaborn as sns
+# import matplotlib.pyplot as plt
 
-# # 读数据
-df_tp1   = pd.read_table(path_save+'tcdist.txt',sep = "\t",na_values=32700)
-df_ave1  = df_tp1['dist'].mean() 
-print('对高原降雪的影响距离:',df_ave1)
-# df_tp2   = pd.read_table(path_save+'tcdist_extrm.txt',sep = "\t",na_values=32700)
-# df_ave2      =df_tp2['dist'].mean() 
-# print('对极端降雪的影响距离:',df_ave2)
+# # # 读数据
+# df_tp1   = pd.read_table(path_save+'tcdist_bysnow.txt',sep = "\t",na_values=32700)
+# df_ave1  = df_tp1['dist'].mean() 
+# print('对高原降雪的影响距离:',df_ave1)
+# # df_tp2   = pd.read_table(path_save+'tcdist_extrm.txt',sep = "\t",na_values=32700)
+# # df_ave2      =df_tp2['dist'].mean() 
+# # print('对极端降雪的影响距离:',df_ave2)
 
-sns.set_style('ticks')
-# 图表风格设置
-# 风格选择包括："white", "dark", "whitegrid", "darkgrid", "ticks"
-plt.figure(figsize=(4,4))#绘制画布
-sns.distplot(df_tp1['dist'],hist = False,kde = True,rug = True,
-              rug_kws = {'color':'g','lw':0.1,'alpha':0.5,'height':0.03} ,
-              # 设置数据频率分布颜色#控制是否显示观测的小细条（边际毛毯）
-              kde_kws={"color": 'g', "lw": 1.5, 'linestyle':'--'},
-              # 设置密度曲线颜色，线宽，标注、线形，#控制是否显示核密度估计图
-              label = 'Snowfall')
-
-# sns.distplot(df_tp2['dist'],hist = False,kde = True,rug = True,
-#               rug_kws = {'color':'goldenrod','lw':0.1,'alpha':0.5,'height':0.1} ,
+# sns.set_style('ticks')
+# # 图表风格设置
+# # 风格选择包括："white", "dark", "whitegrid", "darkgrid", "ticks"
+# plt.figure(figsize=(4,4))#绘制画布
+# sns.distplot(df_tp1['dist'],hist = False,kde = True,rug = True,
+#               rug_kws = {'color':'g','lw':0.1,'alpha':0.5,'height':0.03} ,
 #               # 设置数据频率分布颜色#控制是否显示观测的小细条（边际毛毯）
-#               kde_kws={"color": 'goldenrod', "lw": 1.5, 'linestyle':'--'},
+#               kde_kws={"color": 'g', "lw": 1.5, 'linestyle':'--'},
 #               # 设置密度曲线颜色，线宽，标注、线形，#控制是否显示核密度估计图
-#               label = 'Extreme Snowfall')
+#               label = 'Snowfall')
 
-plt.axvline(df_ave1,color='black',linestyle=":",alpha=0.8) 
-plt.text(df_ave1,0.0003,'%.0fkm' % (df_ave1), fontsize=12.5,color = 'g')
+# # sns.distplot(df_tp2['dist'],hist = False,kde = True,rug = True,
+# #               rug_kws = {'color':'goldenrod','lw':0.1,'alpha':0.5,'height':0.1} ,
+# #               # 设置数据频率分布颜色#控制是否显示观测的小细条（边际毛毯）
+# #               kde_kws={"color": 'goldenrod', "lw": 1.5, 'linestyle':'--'},
+# #               # 设置密度曲线颜色，线宽，标注、线形，#控制是否显示核密度估计图
+# #               label = 'Extreme Snowfall')
 
-# plt.axvline(df_ave2,color='black',linestyle=":",alpha=0.8) 
-# plt.text(df_ave2,0.00038,'%.0fkm' % (df_ave2), fontsize=12.5,color = 'goldenrod')
+# plt.axvline(df_ave1,color='black',linestyle=":",alpha=0.8) 
+# plt.text(df_ave1,0.0003,'%.0fkm' % (df_ave1), fontsize=12.5,color = 'g')
 
-# plt.text(0,0.00082,'(b)', fontsize=13,color = 'black')
+# # plt.axvline(df_ave2,color='black',linestyle=":",alpha=0.8) 
+# # plt.text(df_ave2,0.00038,'%.0fkm' % (df_ave2), fontsize=12.5,color = 'goldenrod')
 
-# ylist=np.arange(0,0.0008,0.0001)#.round(1)
-# plt.yticks(ylist)
-plt.ylim([0,0.00083]) #设置坐标上下限
-plt.xlim([0,3800])
-plt.xlabel('Distance (km)',fontsize=12,fontproperties='Helvetica')
-plt.ylabel('Density',fontsize=12,fontproperties='Helvetica')
-plt.tick_params(labelsize=12) #坐标轴标签
-ax = plt.gca()#获取大图边框
-ax.spines['top'].set_color('black')  
-ax.spines['bottom'].set_color('black')  
-ax.spines['left'].set_color('black')  
-ax.spines['right'].set_color('black')  
+# # plt.text(0,0.00082,'(b)', fontsize=13,color = 'black')
 
-# plt.grid(linestyle = '--')     # 添加网格线
-# plt.title("Distance between TCs and stations")  # 添加图表名
-pic_dir="F:\\snow_related\\pic\\TC\\"
-plt.savefig(pic_dir+'dist_by_snow.ps', dpi=1000, bbox_inches = 'tight')
+# # ylist=np.arange(0,0.0008,0.0001)#.round(1)
+# # plt.yticks(ylist)
+# plt.ylim([0,0.00083]) #设置坐标上下限
+# plt.xlim([0,3800])
+# plt.xlabel('Distance (km)',fontsize=12,fontproperties='Helvetica')
+# plt.ylabel('Density',fontsize=12,fontproperties='Helvetica')
+# plt.tick_params(labelsize=12) #坐标轴标签
+# ax = plt.gca()#获取大图边框
+# ax.spines['top'].set_color('black')  
+# ax.spines['bottom'].set_color('black')  
+# ax.spines['left'].set_color('black')  
+# ax.spines['right'].set_color('black')  
+
+# # plt.grid(linestyle = '--')     # 添加网格线
+# # plt.title("Distance between TCs and stations")  # 添加图表名
+# pic_dir="F:\\snow_related\\pic\\TC\\"
+# plt.savefig(pic_dir+'dist_by_snow.ps', dpi=1000, bbox_inches = 'tight')
 
 
 
