@@ -395,8 +395,8 @@ need=pd.read_table("F:\\snow_sts_data\\1981-2020\\snow_pre_gss.txt",
 
 #%% branch3 计算 step # 各站点年均降雪频数空间分布  转路sta_avg_days_and_test.py
 
-d1=need[['time','snow','station']]
-d2=d1.groupby(by=['station'])['snow'].sum() #慎用value_counts计数，索引很难搞
+# d1=need[['time','snow','station']]
+# d2=d1.groupby(by=['station'])['snow'].sum() #慎用value_counts计数，索引很难搞
 # d3=d2.reset_index()
 # d3.loc[:,'mean']=d3['snow']/40
 # # #添加位置信息，法二

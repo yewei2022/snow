@@ -6,7 +6,7 @@ Created on Tue Jan 31 22:41:14 2023
 @author: Lenovo
 """
 
-# 读取40年高原日平均温度，重新存储
+# 读取40年高原本站气压，重新存储
 import pandas as pd
 import os
 
@@ -22,7 +22,6 @@ import os
 
 # cols=[0,4,5,6,7]
 # colnames=["station","yy","mm","dd","prs"]
-# # filename="SURF_CLI_CHN_MUL_DAY-PRE-13011-200810.TXT"
 # path_info="F:\\snow_sts_data\\1981-2020-prs\\data\\"
 # f_list = os.listdir(path_info)
 # for file in f_list:
@@ -37,24 +36,22 @@ import os
 #     info_tp['time'] =time  # or info_tp.loc[:, 'time'] = time
 #     info_tp.drop(columns = ['yy','mm','dd'],inplace = True)
 #     info_tp['prs']=info_tp['prs']*0.1
-#     # info_tp['dailypre'] = info_tp['dailypre'].apply(lambda x: format(x, '.1f'))
-#     # 这里保留一位小数的话，na_rep命令无效 
 #     info_tp.to_csv("F:\\snow_sts_data\\1981-2020-prs-TP\\"+file[31:37]+".txt",
 #               index = False,sep='\t',na_rep=32766)
 
 
 
-#%%  branch1 step2 组合为一个文件tem1981_2020.txt
+#%%  branch1 step2 组合为一个文件prs1981_2020.txt
 
 # # # #读取tem变成dataframe 
-# path_pre="F:\\snow_sts_data\\1981-2020-prs-TP\\"
-# f_list = os.listdir(path_pre)  
+# path_data="F:\\snow_sts_data\\1981-2020-prs-TP\\"
+# f_list = os.listdir(path_data)  
 # info=[]
 # for file in f_list:   
-#     info.append(pd.read_table(path_pre+file,sep = "\t",na_values=32766))
-# pre = pd.concat(info,ignore_index=True)
+#     info.append(pd.read_table(path_data+file,sep = "\t",na_values=32766))
+# data = pd.concat(info,ignore_index=True)
 
-# pre.to_csv("F:\\snow_sts_data\\1981-2020\\prs1981_2020.txt",index = False,
+# data.to_csv("F:\\snow_sts_data\\1981-2020\\prs1981_2020.txt",index = False,
 #                 sep=' ',na_rep=32700)
 
 

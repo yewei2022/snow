@@ -2,6 +2,8 @@
 """
 Created on Wed Sep 28 11:15:47 2022
 所有TC活动日站点的0C高度
+分段计算 再组合文件*join 连接路径 文件名
+*数组的扩展
 @author: Lenovo
 """
 
@@ -58,10 +60,10 @@ num=np.arange(0, 1025,50)
 num_list=list(num)
 num_list.append(1025)
 ser=np.arange(1, len(num_list),1) #文件比数少1
-# 循环算 则该branch 后文均需要缩进
+# 循环算 该branch 后文均需要缩进
 # for l in range(0,len(num_list)):
     
-#%% 垂直坐标轴插值 我的笔记本不行 内存不够
+#====================垂直坐标轴插值 我的笔记本不行 内存不够======================
 # https://blog.csdn.net/weixin_39864682/article/details/111009962
 
 file_path1='F:\\snow_sts_data\\ERA5\\all\\deal\\tmp_alltcdays.nc'
@@ -100,13 +102,13 @@ var_interp= fx(np.log(need_level))
 print('对数插值后的数据: \n{}'.format(var_interp.shape))
 
 
-#%% 转换成高度
+#============ 转换成高度=======================================
 # # https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.html
 
 need_lv = xr.DataArray(data=need_level*units.hPa, dims={'level':need_level})
 hgt=mpcalc.pressure_to_height_std(need_lv)
 
-#%% 找0C高度
+#============================= 找0C高度=================================
 # # # https://zhuanlan.zhihu.com/p/425885524
 # # https://cloud.tencent.com/developer/ask/sof/299893
 
@@ -117,12 +119,12 @@ hgt=mpcalc.pressure_to_height_std(need_lv)
 arr_tmp=np.tile(273.15,var_interp.shape)
 # print(arr_tmp.shape)
 
-# 一维高度层扩展成数组 在右轴
+# 一维数组（高度层）扩展成数组 在右轴
 arr_hgt=np.broadcast_to(hgt,(len(time2),len(lat),len(lon),
                                     len(need_level)))
 # print(arr_lv.shape)
 
-# 第2轴滚动到第4轴
+# 数组第2轴滚动到第4轴
 idx = np.argmin(np.abs(np.rollaxis(var_interp,1,4) 
                         - np.rollaxis(arr_tmp,1,4)), axis=3)
 num_days=len(time2)
@@ -131,7 +133,7 @@ arr_hgt1=arr_hgt[k,i,j,idx[k,i,j]]
 print('0C高度: \n{}'.format(arr_hgt1.shape)) 
 
 
-#%%  插值到站点 
+#===============插值到站点 ======================================
 
 path_sta='F:\\snow_sts_data\\after_quality_control\\tp_sta_info_by2014.txt'
 station=pd.read_table(path_sta,sep = ",")
@@ -149,7 +151,7 @@ for i in range(len(time2)):
         interp_value=interpolate.interpn((time_index, lat1, lon), arr_hgt11,xi,method='linear')
         arr_hgt2[i,j]=interp_value
 
-# %% 增加坐标属性 保存文件
+#============增加坐标属性 保存文件===============================================
 
 # 一维站点海拔高度扩展成数组 在右轴
 sta_alti=np.broadcast_to(station['alti'],(len(time2),len(station)))

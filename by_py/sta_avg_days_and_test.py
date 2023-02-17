@@ -83,7 +83,7 @@ info3.loc[:,'mean']=info3['snow']/40
 # 不管有nan无nan 百分位数计算结果相同 前提是去掉的nan真的是你要计算的那列数据
 # 但是用np则需要去掉nan
 
-# w=info3['snow'].dropna(axis=0, how='any') #w=69 对69个站造成影响
+# w=info3['snow'].dropna(axis=0, how='any') #w=66 对66个站造成影响
 # print(len(info3[info3['sig']==1]))
 
 

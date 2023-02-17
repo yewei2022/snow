@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Dec  1 16:56:54 2021
-
+主成分分析法
 @author: Lenovo
 """
 import pandas as pd

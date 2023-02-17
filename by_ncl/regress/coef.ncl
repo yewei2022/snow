@@ -1,12 +1,15 @@
-;读取站点降雪日站点降水量，画彩色散点图
+;读取站点降雪日gss异常场，画累积彩色散点图
+;绘制地形3/4/5km等值线,并将等值线变稀疏（切除+平滑）
 ;文件读取方式 http://www.ncl.ucar.edu/Applications/list_io.shtml
 ;散点图参考 http://www.ncl.ucar.edu/Applications/polyg.shtml polyg_8_lbar.ncl
-;  ncl /mnt/f/snow_related/code/by_ncl/snow_all/pre_avg.ncl
+;  ncl /mnt/f/snow_related/code/by_ncl/regress/coef.ncl
 
 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
+
+
 
 ; 一张图的色标图例 
 undef("add_labelbar")
@@ -26,10 +29,10 @@ undef("add_labelbar")
   lbres@lbLabelFontHeightF = 0.02            ; label font height
   lbres@lbBoxLinesOn       =True
   lbres@lbBoxEndCapStyle   = "TriangleBothEnds"
-  lbres@lbTitleString      ="(mm)"
-  lbres@lbTitleFontHeightF = 0.02
-  lbres@lbTitleJust        ="BottomRight"
-  lbres@lbTitlePosition    ="Bottom"
+  ; lbres@lbTitleString      ="(cm)"
+  ; lbres@lbTitleFontHeightF = 0.02
+  ; lbres@lbTitleJust        ="BottomRight"
+  ; lbres@lbTitlePosition    ="Bottom"
   lbres@lbLabelStride      =1
 
   labels = sprintf("%2.1f",levels)
@@ -39,7 +42,7 @@ undef("add_labelbar")
 
   end
 
-;根据降水量将经纬度数组分类
+;根据数值将经纬度数组分类
 undef("mark_lat_lon")
   function mark_lat_lon(num_distinct_markers,R,levels,lat,lon,npts)
   local num_distinct_markers,R,levels,lat,lon,npts,i,indexes,\
@@ -55,7 +58,7 @@ undef("mark_lat_lon")
   lon_new = new((/num_distinct_markers,npts/),float,-999)
   do i = 0, num_distinct_markers-1
     if (i.eq.0) then ;第一个范围
-      indexes = ind(R.lt.levels(0)) ;定位，且小于第一个level的点会画出来
+      indexes = ind(R.lt.levels(0)) ;定位，且小于第一个level的点会画出来 白色
     end if
     if (i.eq.num_distinct_markers-1) then ;最后一个范围
       indexes = ind(R.ge.max(levels))
@@ -90,47 +93,83 @@ undef("plot_rain_scatter")
   gsres@gsMarkerThicknessF = 3 
   do i = 0, num_distinct_markers-1
     if (.not.ismissing(lat_new(i,0)))
-      gsres@gsMarkerColor      = colors(i)
+      gsres@gsMarkerColor      = colors(i,:)
       pmid(i) = gsn_add_polymarker(wks,mapplot,lon_new(i,:),lat_new(i,:),gsres)      
     end if
   end do
   mapplot@$unique_string("pmid")$ = pmid
   end
 
+; 画显著性
+undef("plot_sig_scatter")
+  procedure plot_sig_scatter(wks,lat_new,lon_new,map)
+  local gsres,pmid
+  begin
 
+  gsres               = True
+  gsres@gsMarkerThicknessF = 3 
+  gsres@gsMarkerColor  = "black"
+  gsres@gsMarkerIndex  = 4
+  gsres@gsMarkerSizeF  = 0.02
+  pmid = gsn_add_polymarker(wks,map,lon_new,lat_new,gsres)      
+  map@$unique_string("pmid")$ = pmid
+  end
 
 ;-----------------------------main code------------------------------------
 begin
 
+
 ;--------------------读站点数据----------------------------------
-  filename ="sta_avg_pre_all"
-  filepath = "/mnt/f/snow_sts_data/1981-2020/"+filename+".txt"  ;参数文件路径
-  pic_dir = "/mnt/f/snow_related/pic/snow_all/"
+
+count= 4 ;从0开始
+
+; 填色区间
+  ; levels = fspan(-3, 3, 7)
+  ; levels = fspan(-0.4, 0.4, 9)
+  ; levels = fspan(-3, 3, 7)
+  ; levels = fspan(-0.3, 0.3, 7)
+  levels = fspan(-3, 3, 7)
+  
+  filename =(/"hgt0C","prs" ,"rh", "tcdist","tmp"/)
+  filepath = "/mnt/f/snow_sts_data/ERA5/regress/"+filename(count)+".txt"  ;参数文件路径
+  pic_dir = "/mnt/f/snow_related/pic/regress/"
   f       = asciiread(filepath,-1,"string")
   ; sta     = stringtointeger(str_get_field(f,1," "))  ;读取站号
-  lat     = stringtofloat(str_get_field(f(1:),3," ")) 
   lon     = stringtofloat(str_get_field(f(1:),2," ")) 
-  pre  = stringtofloat(str_get_field(f(1:),4," ")) 
+  lat     = stringtofloat(str_get_field(f(1:),3," ")) 
+  gss     = stringtofloat(str_get_field(f(1:),5," ")) 
+  sig     = stringtofloat(str_get_field(f(1:),6," ")) 
   npts    = numAsciiRow(filepath)-1 ;获取行数-站点数
   ;注意：这里的txt文件最后一行数据下面需要空白行，才能读出文件的正确行数
   ;大多数txt文件都满足要求，但还是需要核实一下
   ;设置缺测值
-  pre@_FillValue = 32700.
-  levels=(/0.1,2.5,5.,10.,20.,30./)
+  gss@_FillValue = 32700.
+  sig@_FillValue = 32700.
+  lon_sig=where(sig.eq.1., lon, 32700.)
+  lat_sig=where(sig.eq.1., lat, 32700.)
+  lon_sig@_FillValue = 32700.
+  lat_sig@_FillValue = 32700.
 
   nlevels = dimsizes(levels)
-  ; colors  = span_color_rgba("wh-bl-gr-ye-re",nlevels+1)
-  colors  = (/"white","deepskyblue","palegreen1","gold",\
-             "lightcoral","orangered","red4"/)
+
+  ; 自动生成指定数目的色卡
+  colors  = span_color_rgba("MPL_bwr",nlevels+1)
+
+  ; 通过编号指定颜色的色卡
+  ; cmap  = read_colormap_file("temp_19lev")
+  ; id=(/5,12,14,15,17,18,19/)
+  ; cmap1= cmap(id,:)
+  ; colors=cmap1
+
   num_distinct_markers = nlevels+1        ; number of distinct markers
 
-  ref   =mark_lat_lon(num_distinct_markers,pre,levels,lat,lon,npts)
+  ref   =mark_lat_lon(num_distinct_markers,gss,levels,lat,lon,npts)
   lat_new_total=ref[0]
   lon_new_total=ref[1]
 
 ;===========================================================================
 ; Begin plotting section.
-  wks = gsn_open_wks("eps",pic_dir+filename)              ; send graphics to PNG file
+  wks = gsn_open_wks("eps",pic_dir+filename(count))              ; send graphics to PNG file
 
 ;---Set up some map resources.
   res                       = True
@@ -160,18 +199,18 @@ begin
   mpres@mpDataBaseVersion       = "MediumRes"
   mpres@mpDataSetName           =  "/mnt/d/ChinaMap/Earth..4"
   mpres@mpOutlineSpecifiers     = (/"China:states"/)
-
   ;边界线
   ; mpres@mpOutlineBoundarySets   = "National"
+
 
 ;-----------------------------绘制散点图-------------------------------------------
   map = gsn_csm_map(wks,mpres)
   plot_rain_scatter(wks,colors,num_distinct_markers,lat_new_total,\
                     lon_new_total,map)
-
+  plot_sig_scatter(wks,lat_sig,lon_sig,map)
 
 ;高原轮廓线
-  shp_line = "/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"   
+  shp_line = "/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  
   lnres                  = True     
   lnres@gsLineColor      ="orange"
   lnres@gsLineThicknessF = 4.0           ; 6x thickness          ; 6x thickness  

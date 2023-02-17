@@ -117,7 +117,7 @@ begin
   ;注意：这里的txt文件最后一行数据下面需要空白行，才能读出文件的正确行数
   ;大多数txt文件都满足要求，但还是需要核实一下
   ;设置缺测值
-  levels=fspan(0, 125, 6)
+  levels=fspan(0, 80, 6)
 
   nlevels = dimsizes(levels)
   colors  = (/"white","deepskyblue3","palegreen1", \
@@ -163,7 +163,7 @@ begin
   mpres@mpFillOn=False
 
   mpres@mpDataBaseVersion       = "MediumRes"
-  mpres@mpDataSetName           =  "/mnt/h/d/ChinaMap/Earth..4"
+  mpres@mpDataSetName           =  "/mnt/d/ChinaMap/Earth..4"
   mpres@mpOutlineSpecifiers     = (/"China:states"/)
   ;边界线
   ; mpres@mpOutlineBoundarySets   = "National"

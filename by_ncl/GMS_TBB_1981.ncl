@@ -16,9 +16,9 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/contrib/cd_string.ncl"
 begin
 
 ;1 读TBB并处理----------------------------------
-  data_dir       ="/mnt/h/recovery/TBB-1981-1997/unknown_format/tbb"
+  data_dir       ="/mnt/recovery/TBB-1981-1997/unknown_format/grd/"
   file_name      ="1981.grd"   
-  pic_dir        ="/mnt/f/snow_related/pic/tbb/test/" 
+  pic_dir        ="/mnt/f/snow_related/pic/tbb/test1981/" 
 
   ntim           =2920
   nlat           =120
@@ -163,7 +163,7 @@ end do
 
 
 ;高原轮廓线可以在循环之外,panel之前
-  shp_line="/mnt/f/snow_sts_data/TPBoundary2021/TPBoundary_new(2021).shp"  
+  shp_line="/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  
   lnres                  = True     
   lnres@gsLineColor      ="orange"
   lnres@gsLineThicknessF = 4.0           ; 6x thickness          ; 6x thickness  

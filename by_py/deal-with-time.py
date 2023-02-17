@@ -78,16 +78,22 @@ import pandas as pd
 #                 sep='\t',encoding = "utf-8")
 
 #%%  generate a time list
-tim_list_1 = pd.date_range("2020-05-15 06:00","2020-05-22 06:00",
-                              freq="H").strftime("%Y%m%d%H").to_list()
-tim_list_2 = pd.date_range("2020-11-22 06:00","2020-11-28 12:00",
-                              freq="H").strftime("%Y%m%d%H").to_list()
-tim_list_3 = pd.date_range("2020-11-29 12:00","2020-12-06 06:00",
-                              freq="H").strftime("%Y%m%d%H").to_list()
-lst=tim_list_1+tim_list_2+tim_list_3 
-tim=pd.DataFrame(lst)
-tim1=tim[0].astype(str).str[2:10]
-tim1.to_csv(r"F:\\snow_sts_data\\2020_tctimfortbb.txt",index = False,
-                sep=' ',header=None,encoding = "utf-8")
+# tim_list_1 = pd.date_range("2020-05-15 06:00","2020-05-22 06:00",
+#                               freq="H").strftime("%Y%m%d%H").to_list()
+# tim_list_2 = pd.date_range("2020-11-22 06:00","2020-11-28 12:00",
+#                               freq="H").strftime("%Y%m%d%H").to_list()
+# tim_list_3 = pd.date_range("2020-11-29 12:00","2020-12-06 06:00",
+#                               freq="H").strftime("%Y%m%d%H").to_list()
+# lst=tim_list_1+tim_list_2+tim_list_3 
+# tim=pd.DataFrame(lst)
+# tim1=tim[0].astype(str).str[2:10]
+# tim1.to_csv(r"F:\\snow_sts_data\\2020_tctimfortbb.txt",index = False,
+#                 sep=' ',header=None,encoding = "utf-8")
+
+
+#%% 将一列时间格式数据time1转换为字符串time2 time1必须是dataframe
+
+# time2=time1.dt.strftime('%Y%m%d') #时间变字符串
+
 
         

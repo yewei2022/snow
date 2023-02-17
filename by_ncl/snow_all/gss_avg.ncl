@@ -159,7 +159,7 @@ begin
   mpres@mpFillOn=False
 
   mpres@mpDataBaseVersion       = "MediumRes"
-  mpres@mpDataSetName           =  "/mnt/h/d/ChinaMap/Earth..4"
+  mpres@mpDataSetName           =  "/mnt/d/ChinaMap/Earth..4"
   mpres@mpOutlineSpecifiers     = (/"China:states"/)
   ;边界线
   ; mpres@mpOutlineBoundarySets   = "National"
