@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Sep 28 11:15:47 2022
-所有TC活动日站点的地面气温
+所有TC活动日站点与TC中心距离
 @author: Lenovo
 """
 

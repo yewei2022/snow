@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Aug 14 21:35:18 2022
-不同海拔高度站点 PA 和SD分布
+不同海拔高度站点 PA 和SD 箱线图
 @author: Lenovo
 """
 
@@ -15,7 +15,7 @@ from scipy import stats
 count=0
 var=['dailypre','gss']
 picname="F:\\snow_related\\pic\\snow_byTC\\"+var[count]
-need=pd.read_table("H:\\snow_sts_data\\1981-2020\\snow_pre_gss.txt",
+need=pd.read_table("F:\\snow_sts_data\\1981-2020\\snow_pre_gss.txt",
                           sep='\s+',na_values=32700)
 
 # # 测试某个值以下占多少百分比
@@ -31,7 +31,7 @@ need=pd.read_table("H:\\snow_sts_data\\1981-2020\\snow_pre_gss.txt",
 
 # #添加海拔 法一 循环添加
 #添加海拔
-path_sta='H:\\snow_sts_data\\after_quality_control\\tp_sta_info_by2014.txt'
+path_sta='F:\\snow_sts_data\\after_quality_control\\tp_sta_info_by2014.txt'
 sta=pd.read_table(path_sta,sep = ",",usecols=['station','alti'])
 alti=[]
 for i in need.station.tolist():
@@ -111,6 +111,6 @@ ax.spines['bottom'].set_color('black')
 ax.spines['left'].set_color('black')  
 ax.spines['right'].set_color('black')  
 
-plt.savefig(picname+'.ps', dpi=1000, bbox_inches = 'tight')
+# plt.savefig(picname+'.ps', dpi=1000, bbox_inches = 'tight')
 
 plt.show() #先保存才能plot.show

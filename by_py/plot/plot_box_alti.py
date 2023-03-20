@@ -20,7 +20,7 @@ df1=pd.read_table("F:\\snow_sts_data\\1981-2020\\"+filename+"_all.txt",
 df2=pd.read_table("F:\\snow_sts_data\\1981-2020\\"+filename+".txt",
                           sep='\s+',na_values=32700)
 
-data = pd.DataFrame({"All": df1['alti'], "TC influencing": df2['alti']}) 
+data = pd.DataFrame({"All": df1['alti'], "TC influenced": df2['alti']}) 
 print(df1['alti'].mean())
 print(df2['alti'].mean())
 

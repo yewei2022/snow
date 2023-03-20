@@ -117,32 +117,32 @@ from matplotlib.path import Path
 
 #%% branch3 计算 step # 比较各站点平均积雪深度 
 
-gss1=pd.read_table("F:\\snow_sts_data\\1981-2020\\wind\\sta_avg_gss1.txt",
-                          sep='\s+',na_values=32700)
+# gss1=pd.read_table("F:\\snow_sts_data\\1981-2020\\wind\\sta_avg_gss1.txt",
+#                           sep='\s+',na_values=32700)
 
-gss2=pd.read_table("F:\\snow_sts_data\\1981-2020\\wind\\sta_avg_gss2.txt",
-                          sep='\s+',na_values=32700)
-a1=gss1['gss_inc'].mean()
-a2=gss2['gss_inc'].mean()
+# gss2=pd.read_table("F:\\snow_sts_data\\1981-2020\\wind\\sta_avg_gss2.txt",
+#                           sep='\s+',na_values=32700)
+# a1=gss1['gss_inc'].mean()
+# a2=gss2['gss_inc'].mean()
 
-gss11=gss1.set_index(['station']) #设置双索引
-gss22=gss2.set_index(['station']) #设置双索引
-gss = pd.concat([gss11,gss22],axis=1)
-gss.reset_index(inplace=True)
+# gss11=gss1.set_index(['station']) #设置双索引
+# gss22=gss2.set_index(['station']) #设置双索引
+# gss = pd.concat([gss11,gss22],axis=1)
+# gss.reset_index(inplace=True)
 
-gss.drop(['lat','lon'],axis=1,inplace=True)
-gss.columns=['station','gss1','gss2']
+# gss.drop(['lat','lon'],axis=1,inplace=True)
+# gss.columns=['station','gss1','gss2']
 
-def fill_label(x):
-    if x["gss1"]>x["gss2"]:
-        return 1
-    else:
-        return 0
-gss.loc[:,'count']= gss.apply(fill_label,axis=1)
-gss.dropna(axis=0, how='any',inplace=True) #删除任何有nan的行
-w=gss['count'].sum()
+# def fill_label(x):
+#     if x["gss1"]>x["gss2"]:
+#         return 1
+#     else:
+#         return 0
+# gss.loc[:,'count']= gss.apply(fill_label,axis=1)
+# gss.dropna(axis=0, how='any',inplace=True) #删除任何有nan的行
+# w=gss['count'].sum()
 
-# w=32 ,gss57 说明较低强度的TC影响的降雪量有32个大于较高强度的，而有25个小于较高强度的
-# 但是a1小于a2 上述结论不成立
+# # w=32 ,gss57 说明较低强度的TC影响的降雪量有32个大于较高强度的，而有25个小于较高强度的
+# # 但是a1小于a2 上述结论不成立
 
 

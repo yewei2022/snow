@@ -116,7 +116,7 @@ plotxy =new(3, graphic)
   res2@gsnLeftString="y="+tostring(b1)+"x+"+tostring(b0)+""
   res2@gsnRightString=rate_sig
 
-  res2@tiYAxisString = "Relative frequency" ; y-axis label
+  res2@tiYAxisString = "Ratio" ; y-axis label
   res2@xyLineColor=colors(1) ;蓝色，TC影响
   res2@tiYAxisFontColor=colors(1)
   res2@trYMaxF =max(rate)+0.15

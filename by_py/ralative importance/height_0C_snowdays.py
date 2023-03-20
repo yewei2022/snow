@@ -116,7 +116,7 @@ for i in range(len(need_time)):
         interp_value=interpolate.interpn((time_index, lat1, lon), arr_hgt11,xi,method='linear')
         arr_hgt2[i,j]=interp_value
 
-#%% 增加坐标属性
+#%% 增加坐标属性 挑选降雪日站点
 
 # 一维站点海拔高度扩展成数组 在右轴
 sta_alti=np.broadcast_to(station['alti'],(len(need_time),len(station)))

@@ -64,7 +64,7 @@ sres@tmEqualizeXYSizes=True
 sres@tmXBLabelFontHeightF=0.015
 ; sres@tmXBLabelAngleF=45
 sres@gsnLeftStringFontHeightF=0.015
-sres@tiYAxisString="Relative frequency(%)"
+sres@tiYAxisString="Percentage (%)"
 sres@tiXAxisString="Asymmetry index ~F33~q~F~ "
  
 sres@tmYMajorGrid                = True          ; implement y grid

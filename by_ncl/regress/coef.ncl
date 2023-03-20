@@ -121,17 +121,17 @@ begin
 
 ;--------------------读站点数据----------------------------------
 
-count= 4 ;从0开始
+count= 1 ;从0开始
 
 ; 填色区间
-  ; levels = fspan(-3, 3, 7)
-  ; levels = fspan(-0.4, 0.4, 9)
-  ; levels = fspan(-3, 3, 7)
   ; levels = fspan(-0.3, 0.3, 7)
-  levels = fspan(-3, 3, 7)
+  levels = fspan(-0.3, 0.3, 7)
+  ; levels = fspan(-2, 2, 11)
+  ; levels = fspan(-0.4, 0.4, 11)
+  ; levels = fspan(-1, 1, 11)
   
-  filename =(/"hgt0C","prs" ,"rh", "tcdist","tmp"/)
-  filepath = "/mnt/f/snow_sts_data/ERA5/regress/"+filename(count)+".txt"  ;参数文件路径
+  filename =(/"WRPI","IBTI" ,"rh", "tcdist","tmp"/) 
+  filepath = "/mnt/f/snow_sts_data/regress/"+filename(count)+".txt"  ;参数文件路径
   pic_dir = "/mnt/f/snow_related/pic/regress/"
   f       = asciiread(filepath,-1,"string")
   ; sta     = stringtointeger(str_get_field(f,1," "))  ;读取站号
@@ -154,12 +154,15 @@ count= 4 ;从0开始
 
   ; 自动生成指定数目的色卡
   colors  = span_color_rgba("MPL_bwr",nlevels+1)
+  ; colors  = span_color_rgba("BlueDarkRed18",nlevels+1)
+
 
   ; 通过编号指定颜色的色卡
   ; cmap  = read_colormap_file("temp_19lev")
   ; id=(/5,12,14,15,17,18,19/)
   ; cmap1= cmap(id,:)
   ; colors=cmap1
+
 
   num_distinct_markers = nlevels+1        ; number of distinct markers
 

@@ -3,7 +3,7 @@
 Created on Fri Feb  3 20:11:27 2023
 做回归分析
 样本量至少应有自变量数量的2-3倍
-R的结果与这里相同
+最终用R来做 R的结果与这里相同
 # https://blog.csdn.net/YangMax1/article/details/120812509
 @author: Lenovo
 """
@@ -14,10 +14,10 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 
 #%% branch1 最小二乘法建立线性回归模型 
-sta=pd.read_table("F:\\snow_sts_data\\ERA5\\regress\\sta_snow\\record.txt",
+sta=pd.read_table("F:\\snow_sts_data\\regress\\sta_snow\\record.txt",
                   sep='\s+')
 sta1=sta[sta['len']>=15]
-station=55690
+station=52645
 
 
 # reg_info=[]
@@ -25,9 +25,9 @@ station=55690
 #     print(station)
 
 #======================可缩进=================================
-df=pd.read_table("F:\\snow_sts_data\\ERA5\\regress\\sta_snow\\"+str(station)
+df=pd.read_table("F:\\snow_sts_data\\regress\\sta_snow\\"+str(station)
                   +".txt", 
-                  sep='\s+',usecols=['pre','hgt0C','prs','rh','tcdist','tmp'])
+                  sep='\s+',usecols=['pre','rh','tcdist','WRPI','IBTI','tmp'])
 
 # #读取数据的基础信息
 # print(df.info())
@@ -40,7 +40,7 @@ df=pd.read_table("F:\\snow_sts_data\\ERA5\\regress\\sta_snow\\"+str(station)
 # # 各变量中缺失值的比例
 # print(df.isnull().sum(axis = 0)/df.shape[0])
 
-model = smf.ols(formula='pre ~ hgt0C + prs + rh+ tcdist + tmp ', data=df)
+model = smf.ols(formula='pre ~ rh + tcdist + WRPI + IBTI + tmp ', data=df)
 modelfit =model.fit()
 print(modelfit.summary()) 
 #============================================================    
