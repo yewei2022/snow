@@ -15,6 +15,10 @@ from matplotlib.path import Path
 need=pd.read_table("F:\\snow_sts_data\\1981-2020\\snow_pre_gss.txt",
                           sep='\s+',na_values=32700)
 
+# a = need[need['tc_id']==200804]
+# a1=a.drop_duplicates(['station'],
+#                               keep='first').reset_index(drop=True)
+
 
 
 # # ========================================================

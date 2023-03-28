@@ -1,8 +1,8 @@
-;读取各个物理量的标准化回归系数，画彩色散点图
+;读取站点降雪日gss异常场，画累积彩色散点图
 ;绘制地形3/4/5km等值线,并将等值线变稀疏（切除+平滑）
 ;文件读取方式 http://www.ncl.ucar.edu/Applications/list_io.shtml
 ;散点图参考 http://www.ncl.ucar.edu/Applications/polyg.shtml polyg_8_lbar.ncl
-;  ncl /mnt/f/snow_related/code/by_ncl/regress/coef.ncl
+;  ncl /mnt/f/snow_related/code/by_ncl/regress/R2_sta.ncl
 
 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
@@ -29,10 +29,10 @@ undef("add_labelbar")
   lbres@lbLabelFontHeightF = 0.02            ; label font height
   lbres@lbBoxLinesOn       =True
   lbres@lbBoxEndCapStyle   = "TriangleBothEnds"
-  ; lbres@lbTitleString      ="(cm)"
-  ; lbres@lbTitleFontHeightF = 0.02
-  ; lbres@lbTitleJust        ="BottomRight"
-  ; lbres@lbTitlePosition    ="Bottom"
+  ; lbres@lbTitleString      ="R~S~2~N~"
+  lbres@lbTitleFontHeightF = 0.02
+  lbres@lbTitleJust        ="BottomRight"
+  lbres@lbTitlePosition    ="Bottom"
   lbres@lbLabelStride      =1
 
   labels = sprintf("%2.1f",levels)
@@ -93,7 +93,7 @@ undef("plot_rain_scatter")
   gsres@gsMarkerThicknessF = 3 
   do i = 0, num_distinct_markers-1
     if (.not.ismissing(lat_new(i,0)))
-      gsres@gsMarkerColor      = colors(i,:)
+      gsres@gsMarkerColor      = colors(i)
       pmid(i) = gsn_add_polymarker(wks,mapplot,lon_new(i,:),lat_new(i,:),gsres)      
     end if
   end do
@@ -121,17 +121,8 @@ begin
 
 ;--------------------读站点数据----------------------------------
 
-count= 1 ;从0开始
-
-; 填色区间
-  ; levels = fspan(-0.3, 0.3, 7)
-  levels = fspan(-0.3, 0.3, 7)
-  ; levels = fspan(-2, 2, 11)
-  ; levels = fspan(-0.4, 0.4, 11)
-  ; levels = fspan(-1, 1, 11)
-  
-  filename =(/"WRPI","IBTI" ,"rh", "tcdist","tmp"/) 
-  filepath = "/mnt/f/snow_sts_data/regress/"+filename(count)+".txt"  ;参数文件路径
+  filename ="R2_sta"
+  filepath = "/mnt/f/snow_sts_data/regress/"+filename+".txt"  ;参数文件路径
   pic_dir = "/mnt/f/snow_related/pic/regress/"
   f       = asciiread(filepath,-1,"string")
   ; sta     = stringtointeger(str_get_field(f,1," "))  ;读取站号
@@ -150,19 +141,14 @@ count= 1 ;从0开始
   lon_sig@_FillValue = 32700.
   lat_sig@_FillValue = 32700.
 
+
+  levels=fspan(0.1, 0.7, 7)
+
   nlevels = dimsizes(levels)
 
-  ; 自动生成指定数目的色卡
-  colors  = span_color_rgba("MPL_bwr",nlevels+1)
-  ; colors  = span_color_rgba("BlueDarkRed18",nlevels+1)
-
-
-  ; 通过编号指定颜色的色卡
-  ; cmap  = read_colormap_file("temp_19lev")
-  ; id=(/5,12,14,15,17,18,19/)
-  ; cmap1= cmap(id,:)
-  ; colors=cmap1
-
+  colors  = (/"white","deepskyblue","palegreen1",\
+             "darkseagreen","gold","lightcoral","orangered","red4"/)
+  
 
   num_distinct_markers = nlevels+1        ; number of distinct markers
 
@@ -172,7 +158,7 @@ count= 1 ;从0开始
 
 ;===========================================================================
 ; Begin plotting section.
-  wks = gsn_open_wks("eps",pic_dir+filename(count))              ; send graphics to PNG file
+  wks = gsn_open_wks("eps",pic_dir+filename)              ; send graphics to PNG file
 
 ;---Set up some map resources.
   res                       = True

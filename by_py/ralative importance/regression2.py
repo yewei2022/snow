@@ -89,5 +89,28 @@ import os
 # print('R2 几分位数: \n{}'.format(a2))
 
 
+#%% branch3 step2 给R2 站点经纬度加上 保存文件 用于NCL绘图
+
+# #添加位置信息，法二
+# path_sta='F:\\snow_sts_data\\after_quality_control\\tp_sta_info_by2014.txt'
+# sta=pd.read_table(path_sta,sep = ",",usecols=['station','lon','lat','alti'])
+# #拼接
+# sta.set_index('station', inplace=True) # column 改为 index
+# df0.set_index('station', inplace=True) # column 改为 index
+# df1=pd.concat([sta,df0],axis=1,join="inner") #和80个站点信息取交集
+# df2=df1.reset_index()
+# w=0.3
+# print('R2达到 {} 的站点数量有 {}'.format(w, len(df2[df2['R2']>=w])))
+
+# # #写入文件
+# # df2.to_csv("F:\\snow_sts_data\\regress\\R2_sta.txt",
+# #                     index = False,sep=' ',na_rep=32700, 
+# #                     columns=['station','lon','lat','alti','R2','sig'])
+
+#%% branch4 step1 看感兴趣的R2站点的具体情况
+
+# a = pd.read_table("F:\\snow_sts_data\\regress\\R2_sta.txt",sep = "\s+")
+
+
 
  
