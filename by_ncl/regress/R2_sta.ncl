@@ -121,9 +121,10 @@ begin
 
 ;--------------------读站点数据----------------------------------
 
+  folder = "third_wf_Ri/"
   filename ="R2_sta"
-  filepath = "/mnt/f/snow_sts_data/regress/"+filename+".txt"  ;参数文件路径
-  pic_dir = "/mnt/f/snow_related/pic/regress/"
+  filepath = "/mnt/f/snow_sts_data/regress/"+folder+filename+".txt"  ;参数文件路径
+  pic_dir = "/mnt/f/snow_related/pic/regress/"+folder
   f       = asciiread(filepath,-1,"string")
   ; sta     = stringtointeger(str_get_field(f,1," "))  ;读取站号
   lon     = stringtofloat(str_get_field(f(1:),2," ")) 

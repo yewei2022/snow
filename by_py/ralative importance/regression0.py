@@ -26,7 +26,7 @@ import pandas as pd
 # print(new_file)
 
 # #测试组合后文件和原来文件里的值是否相同
-# data1 = xr.open_dataset(file_list[7])
+# data1 = xr.open_dataset(file_list[8])
 # tmp1=data1.tmp
 # tmp2=new_file.tmp
 # # print(tmp1.time)
@@ -36,7 +36,8 @@ import pandas as pd
 # new_file.to_netcdf('F:\\snow_sts_data\\regress\\data_station.nc')#输出合并后的nc文件  
 
 
-#%% branch2 所有风暴活动日所有站点 将数据处理为1个站点一个文本 便于后续对单个站点回归
+#%% branch2 所有风暴活动日所有站点 不管有没有降雪  效果不好 pass
+# 将数据处理为1个站点一个文本 便于后续对单个站点回归
 
   
 # path2='F:\\snow_sts_data\\ERA5\\regress\\data_station.nc'
@@ -65,9 +66,10 @@ import pandas as pd
 #     print('读取至第{}个站点:{}'.format(j,station[j].values))
 
 
-#%% branch3 所有风暴活动日的发生降雪站点 将数据处理为1个站点一个文本 便于后续对单个站点回归 
+#%% branch3 所有风暴活动日的发生降雪站点 将数据标准化处理为1个站点一个文本 便于后续对单个站点回归 
 # https://zhuanlan.zhihu.com/p/101250372?from_voters_page=true 标准化
 
+# folder = "third_wf_Ri"
 # snow=pd.read_table("F:\\snow_sts_data\\1981-2020\\snow_pre_gss_all.txt",
 #                           sep='\s+',na_values=32700)
 # snow1=snow[['station','time','snow']]
@@ -76,7 +78,7 @@ import pandas as pd
 # data2 = xr.open_dataset(path2)
 # print(data2)
 
-# xyname=['pre','rh','tcdist','WRPI','IBTI','tmp','hgt0C','prs']
+# xyname=['pre','rh','tcdist','WRPI','IBTI','tmp','hgt0C','Wf','Ri','prs']
 
 # # # 测试单条
 # # station=55690
@@ -104,14 +106,14 @@ import pandas as pd
 #     sta_reg3.rename(columns={"index":"time"},inplace=True)
 #     # #删除任何有nan的行
 #     sta_reg4=sta_reg3.dropna(axis=0, how='any') #每个站点不同
-#     sta_reg4.to_csv("F:\\snow_sts_data\\regress\\sta_snow\\"+
+#     sta_reg4.to_csv("F:\\snow_sts_data\\regress\\"+folder+"\\sta_snow\\"+ 
 #                     str(station[j].values)+".txt", index = False,sep=' ')
 #     print('读取至第{}个站点:{}'.format(j,station[j].values))
 #     print('站点 {} 有 {} 条记录'.format(station[j].values,len(sta_reg4)))
 #     newline=[station[j].values,len(sta_reg4)]
 #     record.append(newline)
 # record1=pd.DataFrame(record,columns=['station','len'])
-# record1.to_csv("F:\\snow_sts_data\\regress\\sta_snow\\record.txt", 
+# record1.to_csv("F:\\snow_sts_data\\regress\\"+folder+"\\sta_snow\\record.txt", 
 #                 index = False,sep=' ')
 
 

@@ -118,21 +118,22 @@ undef("plot_sig_scatter")
 ;-----------------------------main code------------------------------------
 begin
 
+folder = "third_wf_Ri/"
 
-;--------------------读站点数据----------------------------------
-
-count= 1 ;从0开始
+filename =(/"WRPI","IBTI" ,"rh", "tcdist","tmp","Wf","Ri"/) 
+count=  6 ;从0开始
 
 ; 填色区间
   ; levels = fspan(-0.3, 0.3, 7)
-  levels = fspan(-0.3, 0.3, 7)
+  ; levels = fspan(-0.3, 0.3, 7)
   ; levels = fspan(-2, 2, 11)
   ; levels = fspan(-0.4, 0.4, 11)
   ; levels = fspan(-1, 1, 11)
+  ; levels = fspan(-0.4, 0.4, 11)
+  levels = fspan(-0.5, 0.5, 11)
   
-  filename =(/"WRPI","IBTI" ,"rh", "tcdist","tmp"/) 
-  filepath = "/mnt/f/snow_sts_data/regress/"+filename(count)+".txt"  ;参数文件路径
-  pic_dir = "/mnt/f/snow_related/pic/regress/"
+  filepath = "/mnt/f/snow_sts_data/regress/"+folder+filename(count)+".txt"  ;参数文件路径
+  pic_dir = "/mnt/f/snow_related/pic/regress/"+folder
   f       = asciiread(filepath,-1,"string")
   ; sta     = stringtointeger(str_get_field(f,1," "))  ;读取站号
   lon     = stringtofloat(str_get_field(f(1:),2," ")) 
@@ -210,7 +211,7 @@ count= 1 ;从0开始
   map = gsn_csm_map(wks,mpres)
   plot_rain_scatter(wks,colors,num_distinct_markers,lat_new_total,\
                     lon_new_total,map)
-  plot_sig_scatter(wks,lat_sig,lon_sig,map)
+  ; plot_sig_scatter(wks,lat_sig,lon_sig,map)
 
 ;高原轮廓线
   shp_line = "/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  

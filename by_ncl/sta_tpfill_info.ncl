@@ -24,7 +24,7 @@ begin
   npts = numAsciiRow(filepath+name+".txt")-1 ;获取行数-1=站点数
 
 ;读地形文件
-  topo        = addfile("/mnt/h/d/data/other/ETOPO2v2c_f4.nc", "r")
+  topo        = addfile("/mnt/d/case/data/other/ETOPO2v2c_f4.nc", "r")
   elev        = topo->z({0:50},{70:110}) 
   ; printVarSummary(elev)
   ; exit 

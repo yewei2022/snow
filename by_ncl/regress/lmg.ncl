@@ -58,9 +58,9 @@ begin
 ; 读站点数据----------------------------------
 
 count= 3 ;从1开始
- 
-  filepath = "/mnt/f/snow_sts_data/regress/lmg"+tostring(count)+".txt"  ;参数文件路径
-  pic_dir = "/mnt/f/snow_related/pic/regress/"
+folder = "third_wf_Ri/"
+  filepath = "/mnt/f/snow_sts_data/regress/"+folder+"lmg"+tostring(count)+".txt"  ;参数文件路径
+  pic_dir = "/mnt/f/snow_related/pic/regress/"+folder
   f       = asciiread(filepath,-1,"string")
   ; sta     = stringtointeger(str_get_field(f,1," "))  ;读取站号
   lon     = stringtofloat(str_get_field(f(1:),2," ")) 
@@ -73,12 +73,13 @@ count= 3 ;从1开始
   gss@_FillValue = 32700.
 
 ; 填色区间 
-  levels = (/"WRPI","IBTI","RH","DIS","TEM"/)
+  levels = (/"WRPI","IBTI","RH","DIS","TEM","Wf","Ri"/)
 
   nlevels = dimsizes(levels)
 
   ; 自动生成指定数目的色卡
-  colors  = (/"dodgerblue","cyan2","gold","darksalmon","hotpink"/)
+  colors  = (/"dodgerblue","cyan2","gold","darksalmon","hotpink",\
+             "olivedrab3","seagreen"/)
 
   num_distinct_markers = nlevels        ; number of distinct markers
 
@@ -88,7 +89,7 @@ count= 3 ;从1开始
 
 ;===========================================================================
 ; Begin plotting section.
-  wks = gsn_open_wks("eps",pic_dir+"scatter_lmg"+tostring(count))              ; send graphics to PNG file
+  wks = gsn_open_wks("eps",pic_dir+"legend_scatter_lmg"+tostring(count))              ; send graphics to PNG file
 
 ;---Set up some map resources.
   res                       = True
@@ -139,19 +140,37 @@ draw(map)
 ;色标图例
 ;图例
 lbres                    = True          ; labelbar only resources
-lbres@vpWidthF           = 0.2           ; labelbar width
-lbres@vpHeightF          = 0.05           ; labelbar height
+lbres@vpWidthF           = 0.16           ; labelbar width
+lbres@vpHeightF          = 0.08           ; labelbar height
 lbres@lbBoxMajorExtentF  = 0.32          ; puts space between color boxes
 lbres@lbMonoFillPattern  = True          ; Solid fill pattern
 lbres@lbLabelFontHeightF = 0.015        ; font height. default is small
 lbres@lbLabelJust        = "CenterLeft"  ; left justify labels
 lbres@lbPerimOn          = False
 lbres@lgPerimColor       = "white"
-poslb1=0.1
+lbres@lbBoxLinesOn       = False ;色块边框
+
+; ;单张图的图例排版
+; poslb1=0.2
+; do i = 0,3
+; lbres@lbFillColors       = colors(i)
+; gsn_labelbar_ndc(wks,1,levels(i),poslb1+i*0.15,0.25,lbres) 
+; end do
+
+; poslb2=poslb1-0.005
+; do i = 4,nlevels-1
+; lbres@lbFillColors       = colors(i)
+; gsn_labelbar_ndc(wks,1,levels(i),poslb2+(i-4)*0.15,0.2,lbres) 
+; end do
+
+;组图的图例排版 全在一排
+poslb1=0.02
 do i = 0,nlevels-1
 lbres@lbFillColors       = colors(i)
-gsn_labelbar_ndc(wks,1,levels(i),poslb1+i*0.15,0.25,lbres) ; draw left labelbar column
+gsn_labelbar_ndc(wks,1,levels(i),poslb1+i*0.14,0.25,lbres) 
 end do
+
+
 frame(wks)
 
 end     

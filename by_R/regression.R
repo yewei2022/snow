@@ -1,5 +1,5 @@
 
-sta <- read.table("F:\\snow_sts_data\\regress\\sta_snow\\record.txt",
+sta <- read.table("F:\\snow_sts_data\\regress\\third_wf_Ri\\sta_snow\\record.txt",
                   sep=' ',header=1)
 # sta11 <- sta[, "station"]
 sta1 <- sta[which(sta$len>=15),]
@@ -9,13 +9,14 @@ R2_pf2 <- c()
 for (station in sta1$station) {
 
 # station <- 51804
-file_in <- paste("F:\\snow_sts_data\\regress\\sta_snow\\",
+file_in <- paste("F:\\snow_sts_data\\regress\\third_wf_Ri\\sta_snow\\",
                   as.character(station), ".txt", sep = "", collapse = "")
 data <- read.table(file_in, sep=" ", header=1)
 head(data)
 
 # model<-lm(pre ~  rh + tcdist + prs + hgt0C + tmp, data = data)
-model<-lm(pre ~   rh + tcdist  + IBTI + WRPI + tmp, data = data)
+#model<-lm(pre ~   rh + tcdist  + IBTI + WRPI + tmp, data = data)
+model<-lm(pre ~   rh + tcdist  + IBTI + WRPI + tmp + Wf + Ri, data = data)
 
 # model
 summary(model)
@@ -44,11 +45,11 @@ df <- merge(coef2, lmg2, by = "row.names", all = TRUE)
 # df <- plyr::rbind.fill(coef2, lmg2)
 
 # 保存回归系数，t检验，和相对重要性
-file_out <- paste("F:\\snow_sts_data\\regress\\coef\\",
+file_out <- paste("F:\\snow_sts_data\\regress\\third_wf_Ri\\coef\\",
                  as.character(station), ".txt", sep = "", collapse = "")
 write.table(df, file=file_out, sep=" ", col.names=T,quote=F, na='32700')
 
 }
 
-write.table(R2_pf2, file="F:\\snow_sts_data\\regress\\R2_pf.txt", 
+write.table(R2_pf2, file="F:\\snow_sts_data\\regress\\third_wf_Ri\\R2_pf.txt", 
             sep=" ", col.names=T, row.names=F, quote=F, na='32700')

@@ -10,7 +10,7 @@ import shutil
 import pandas as pd
 import datetime
 
-#%% branch1 #读取时间信息 #批量读取文件，根据时间复制相关时间的tbb文件至另一文件夹
+#%% branch1 #读取tbb逐小时时间信息 根据时间复制相关时间的tbb文件至另一文件夹
 
 # path_time='F:\snow_sts_data\\tc_tims_1h.txt' #时间精确到时
 # tim0=pd.read_table(path_time) 
@@ -50,7 +50,7 @@ import datetime
 
 
 
-#%% branch2 #读取时间信息 #批量读取文件，根据时间复制相关时间的ERA5文件至另一文件夹
+#%% branch2 #读取降雪日时间信息 根据时间批量复制相关时间的ERA5文件至另一文件夹
 
 # # 读取时间
 # file_date="F:\\snow_sts_data\\REOF\\spa_index.txt"
@@ -112,68 +112,72 @@ import datetime
 #                     shutil.copy(src_dir_path+file,to_dir_path+file)
 
 
-#%% branch3 #读取时间信息 #批量读取所有tc活动日数文件，根据时间复制相关时间的ERA5文件至另一文件夹
+#%% branch3 #读取所有tc活动日时间，根据时间复制相关时间的ERA5文件至另一文件夹
 
-# 读取时间
-file_date="F:\\snow_sts_data\\TC\\all_tc_days.txt"
-date=pd.read_csv(file_date,sep="\s+",usecols=['bjt'])
+# # 读取时间
+# file_date="F:\\snow_sts_data\\TC\\all_tc_days.txt"
+# date=pd.read_csv(file_date,sep="\s+",usecols=['bjt'])
 
-# 前一天的时间
-date.loc[:,'bjt']=pd.to_datetime(date['bjt'].astype(str)) 
-date1=date.set_index('bjt') # Datetime 列改为 index
-date2=date1.shift(periods=-1, freq="D") #时间前移一天
-date3=date2.reset_index(drop=False)
-# 合并两个时间 去掉重复时间
-date4=pd.concat([date,date3])
-date4.loc[:,'bjt']=date4['bjt'].dt.strftime("%Y%m%d")
-date5 = date4.sort_values(by='bjt', ascending=True)
-date6=date5.drop_duplicates(['bjt'],keep='first').reset_index(drop=True)
+# # 前一天的时间
+# date.loc[:,'bjt']=pd.to_datetime(date['bjt'].astype(str)) 
+# date1=date.set_index('bjt') # Datetime 列改为 index
+# date2=date1.shift(periods=-1, freq="D") #时间前移一天
+# date3=date2.reset_index(drop=False)
+# # 合并两个时间 去掉重复时间
+# date4=pd.concat([date,date3])
+# date4.loc[:,'bjt']=date4['bjt'].dt.strftime("%Y%m%d")
+# date5 = date4.sort_values(by='bjt', ascending=True)
+# date6=date5.drop_duplicates(['bjt'],keep='first').reset_index(drop=True)
 
-date0=date6['bjt'].astype(str).tolist()  
+# date0=date6['bjt'].astype(str).tolist()  
 
-# # 少了一个文件 测试 19820430
-# path_file='F:\\snow_sts_data\\ERA5\\all\\geopotential\\'
-# f_list = os.listdir(path_file) 
-# f_list1=[]
-# for f in f_list:
-#     f_list1.append(str(f)[18:26])
+# # # 少了一个文件 测试 19820430 在盘里另一个文件夹
+# # path_file='F:\\snow_sts_data\\ERA5\\u100\\'
+# # f_list = os.listdir(path_file) 
+# # f_list1=[]
+# # for f in f_list:
+# #     f_list1.append(str(f)[30:38])
     
-# set1=set(date0)
-# set2=set(f_list1)
-# print(set3=set1^set2)
+# # set1=set(date0)
+# # set2=set(f_list1)
+# # set3=set1^set2
+# # print('漏掉的日期：{}'.format(set3))
 
 
-fromdirname =  ['G:\\geopotential\\','H:\\u_component_of_wind\\',
-                'H:\\v_component_of_wind\\','H:\\specific_humidity\\',
-                'G:\\relative_humidity\\','H:\\temperature\\']
-varname     =  ['era5.geopotential.','era5.u_component_of_wind.',
-              'era5.v_component_of_wind.','era5.specific_humidity.',
-              'era5.relative_humidity.', 'era5.temperature.']
-todirname   =  ['geopotential', 'u', 'v','q','rh','tmp']
+# fromdirname =  ['G:\\geopotential\\','H:\\u_component_of_wind\\',
+#                 'H:\\v_component_of_wind\\','H:\\specific_humidity\\',
+#                 'G:\\relative_humidity\\','H:\\temperature\\',
+#                 'J:\\100m_u_component_of_wind\\', 
+#                 'J:\\100m_v_component_of_wind\\']
+# varname     =  ['era5.geopotential.','era5.u_component_of_wind.',
+#               'era5.v_component_of_wind.','era5.specific_humidity.',
+#               'era5.relative_humidity.', 'era5.temperature.',
+#               'era5.100m_u_component_of_wind.','era5.100m_v_component_of_wind.']
+# todirname   =  ['geopotential', 'u', 'v','q','rh','tmp','u100','v100']
 
-newname=[]
-i=5
-# for i in range(0,4):
-for day in date0: 
-    newname.append(varname[i]+day+'.nc')
+# newname=[]
+# i = 7
+# # for i in range(0,4):
+# for day in date0: 
+#     newname.append(varname[i]+day+'.nc')
     
-# 源文件夹中的文件包含字符key则复制到to_dir_path文件夹中
-for key in newname:    
-    src_dir_path = fromdirname[i]     # 源文件夹    
-    to_dir_path = 'F:\\snow_sts_data\\ERA5\\all\\'+todirname[i]+'\\'   # 存放复制文件的文件夹
+# # 源文件夹中的文件包含字符key则复制到to_dir_path文件夹中
+# for key in newname:    
+#     src_dir_path = fromdirname[i]     # 源文件夹    
+#     to_dir_path = 'F:\\snow_sts_data\\ERA5\\'+todirname[i]+'\\'   # 存放复制文件的文件夹
    
-    if not os.path.exists(to_dir_path):
-        print("to_dir_path not exist,so create the dir")
-        os.mkdir(to_dir_path,1)
-    if os.path.exists(src_dir_path):
-        print("src_dir_path exitst")
-        for file in os.listdir(src_dir_path):
-            # is file
-            if os.path.isfile(src_dir_path+'/'+file):
-                if key in file:
-                    print('找到包含"'+key+'"字符的文件,绝对路径:'+src_dir_path+file)
-                    print('复制到:'+to_dir_path+file)
-                    shutil.copy(src_dir_path+file,to_dir_path+file)
+#     if not os.path.exists(to_dir_path):
+#         print("to_dir_path not exist,so create the dir")
+#         os.mkdir(to_dir_path,1)
+#     if os.path.exists(src_dir_path):
+#         print("src_dir_path exitst")
+#         for file in os.listdir(src_dir_path):
+#             # is file
+#             if os.path.isfile(src_dir_path+'/'+file):
+#                 if key in file:
+#                     print('找到包含"'+key+'"字符的文件,绝对路径:'+src_dir_path+file)
+#                     print('复制到:'+to_dir_path+file)
+#                     shutil.copy(src_dir_path+file,to_dir_path+file)
 
 
 

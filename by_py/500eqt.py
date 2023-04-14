@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Sep 28 13:57:32 2022
-1.提取并计算TC日均值 成功
+1.提取并计算 500hPa rh tmp 的TC日均值 成功
 2.计算eqt 失败
 @author: Lenovo
 """
