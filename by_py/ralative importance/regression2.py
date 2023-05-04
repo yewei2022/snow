@@ -10,7 +10,7 @@ import os
 
 folder = "third_wf_Ri"
 
-#%% branch1 step1 序列重组为每个自变量在所有站点的标准化系数 保存为一个系数一个文件
+#%% branch1 step1 序列重组为每个因子在所有站点的标准化系数 保存为一个系数一个文件
 
 # # # 测试单条
 # # df=pd.read_table("F:\\snow_sts_data\\ERA5\\regress\\coef\\51804.txt",

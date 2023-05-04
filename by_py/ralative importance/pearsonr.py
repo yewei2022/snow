@@ -58,7 +58,7 @@ folder = "third_wf_Ri"
 
 
 
-#%% branch2 step1 相关性 0.3-0.8之间
+#%% branch2 pre和各因子相关性 0.3-0.8之间
 
 # import pandas as pd
 # from scipy.stats import pearsonr
@@ -126,3 +126,31 @@ folder = "third_wf_Ri"
 #     #写入文件
 #     df2.to_csv("F:\\snow_sts_data\\regress\\"+folder+"\\r_p\\"+var+".txt",
 #                         index = False,sep=' ',na_rep=32700)
+
+
+#%% branch3 查看某个因子的数值范围
+
+# import pandas as pd
+# import numpy as np
+
+# # 测试单条
+df = pd.read_table("F:\\snow_sts_data\\regress\\"+folder+"\\sta_snow_nostd\\"+
+                    "56034.txt", sep='\s+')
+# 副高指数计算有问题
+
+# record = pd.read_table("F:\\snow_sts_data\\regress\\"+folder+
+#                     "\\sta_snow_nostd\\record.txt",
+#                   sep='\s+')
+# sta1=record[record['len']>=15]
+
+# f = []
+# for station in sta1.station.tolist():
+#     print(station)
+#     df = pd.read_table("F:\\snow_sts_data\\regress\\"+folder+
+#                         "\\sta_snow_nostd\\"+str(station)+".txt", sep='\s+')
+#     varname=['rh','tcdist','WRPI','IBTI','tmp','hgt0C','Wf','Ri','prs']
+#     i = 2
+#     b = df[varname[i]]
+#     f.append(b)
+    
+# f_df=pd.concat(f,axis = 0)  

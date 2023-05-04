@@ -1,5 +1,5 @@
 ; 计算地形强迫抬升速度 Wf 并写入bin文件
-; 中途有一些没有必要的时间转换
+; 中途有一些没有必要的时间转换 时间处理
 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl" 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl" 

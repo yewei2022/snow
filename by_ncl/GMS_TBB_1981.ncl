@@ -141,9 +141,10 @@ res = True
   pres@gsnFrame        = False  ; don't advance frame yet，以便后面使用gsn_legend_ndc   
   pres@gsnMaximize           = True                 ; maximize in frame
   pres@gsnPaperOrientation   = "Portrait"            ;portra和maximize必须同时设置才会生效
-  pres@gsnPanelLabelBar      =True    ;共用一个色标
-  ; pres@pmLabelBarOrthogonalPosF       = -0.008 ;色标条与图之间的距离
-  ; pres@pmLabelBarParallelPosF         = 0.0 
+  ;以下为色标设置
+  pres@gsnPanelLabelBar               =True    ;共用一个色标
+  ; pres@pmLabelBarOrthogonalPosF     = -0.008 ;色标条与图之间的距离
+  ; pres@pmLabelBarParallelPosF       = 0.0 
   pres@pmLabelBarWidthF               = 0.5    
   pres@pmLabelBarHeightF              = 0.05
   pres@lbBoxLinesOn                   = True ; 色标之间分界线

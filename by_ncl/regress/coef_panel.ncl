@@ -57,25 +57,25 @@ undef("add_labelbar")
   nlevels = dimsizes(levels)
   ; Draw a labelbar
   lbres                    = True
-  lbres@vpWidthF           = 0.5           ; width
-  lbres@vpHeightF          = 0.06            ; height
+  lbres@vpWidthF           = 0.4           ; width
+  lbres@vpHeightF          = 0.04            ; height
   lbres@lbPerimOn          = False            ; Turn off perimeter.
   lbres@lbOrientation      = "Horizontal"     ; Default is vertical.
   lbres@lbLabelAlignment   = "InteriorEdges"  ; Default is "BoxCenters",标签如何与标签栏对齐
   lbres@lbFillColors       = colors           ; Colors for boxes.
   lbres@lbMonoFillPattern  = True             ; Fill them all solid.
-  lbres@lbLabelFontHeightF = 0.02            ; label font height
+  lbres@lbLabelFontHeightF = 0.012            ; label font height
   lbres@lbBoxLinesOn       =True
   lbres@lbBoxEndCapStyle   = "TriangleBothEnds"
   ; lbres@lbTitleString      ="(cm)"
   ; lbres@lbTitleFontHeightF = 0.02
   ; lbres@lbTitleJust        ="BottomRight"
   ; lbres@lbTitlePosition    ="Bottom"
-  lbres@lbLabelStride      =1
+  lbres@lbLabelStride      = 1
 
   labels = sprintf("%2.1f",levels)
 
-  gsn_labelbar_ndc(wks,nlevels+1,labels,0.25,0.235,lbres)
+  gsn_labelbar_ndc(wks,nlevels+1,labels,0.314,0.05,lbres)
   frame(wks)                                   ; now advance the frame
 
   end
@@ -127,7 +127,7 @@ undef("plot_rain_scatter")
   pmid = new(num_distinct_markers,graphic)
   gsres               = True
   gsres@gsMarkerIndex = 16  ;
-  gsres@gsMarkerSizeF      = 0.02
+  gsres@gsMarkerSizeF      = 0.01
   gsres@gsMarkerThicknessF = 3 
   do i = 0, num_distinct_markers-1
     if (.not.ismissing(lat_new(i,0)))
@@ -158,16 +158,18 @@ begin
 
 folder = "third_wf_Ri/"
 pic_dir = "/mnt/f/snow_related/pic/regress/"+folder
-filename =(/"WRPI","IBTI" ,"rh", "tcdist","tmp","Wf","Ri"/) 
 
-count = 0
+filename =(/"WRPI","IBTI" ,"rh", "tcdist","tmp","Wf","Ri"/) 
+; var_str =(/"(a)WRPI","(b)IBTI" ,"(c)RH", "(d)DIS","(e)TEM","(f)W~B~f~N~","(g)Ri"/) 
+var_str =(/"(a)WRPI","(b)IBTI" ,"(c)RH", "(d)DIS","(e)TEM","(f)Wf","(g)Ri"/) 
+
 ; 填色区间
-  levels = fspan(-0.3, 0.3, 7)
+  ; levels = fspan(-0.3, 0.3, 7)
   ; levels = fspan(-0.3, 0.3, 7)
   ; levels = fspan(-2, 2, 11)
   ; levels = fspan(-0.4, 0.4, 11)
   ; levels = fspan(-1, 1, 11)
-  ; levels = fspan(-0.4, 0.4, 11)
+  levels = fspan(-0.4, 0.4, 11)
   ; levels = fspan(-0.5, 0.5, 11)
 
   nlevels = dimsizes(levels)
@@ -176,15 +178,32 @@ count = 0
   colors  = span_color_rgba("MPL_bwr",nlevels+1)
   ; colors  = span_color_rgba("BlueDarkRed18",nlevels+1)
 
+
+  ; 读取固定值 比如经纬度 行数
+  filepath0 = "/mnt/f/snow_sts_data/regress/"+folder+filename(0)+".txt"  
+  f0        = asciiread(filepath0,-1,"string")
+  lon       = stringtofloat(str_get_field(f0(1:),2," ")) 
+  lat       = stringtofloat(str_get_field(f0(1:),3," "))
+  npts      = numAsciiRow(filepath0)-1 ;获取行数-站点数
+ 
+
+wks = gsn_open_wks("eps",pic_dir+"coef")              ; send graphics to PNG file
+
+map = new(7,graphic)
+shp_plot = new(7,graphic)
+
+res       = True
+mpres     = True
+lnres    = True
+set_all_res(res,mpres,lnres) 
+
+do i =0, 6
   
-  filepath := "/mnt/f/snow_sts_data/regress/"+folder+filename(count)+".txt"  
+  filepath := "/mnt/f/snow_sts_data/regress/"+folder+filename(i)+".txt"  
   f       := asciiread(filepath,-1,"string")
   ; sta     = stringtointeger(str_get_field(f,1," "))  ;读取站号
   gss     := stringtofloat(str_get_field(f(1:),5," ")) 
   sig     := stringtofloat(str_get_field(f(1:),6," ")) 
-  lon       = stringtofloat(str_get_field(f(1:),2," ")) 
-  lat       = stringtofloat(str_get_field(f(1:),3," "))
-  npts      = numAsciiRow(filepath)-1 ;获取行数-站点数
   ;注意：这里的txt文件最后一行数据下面需要空白行，才能读出文件的正确行数
   ;大多数txt文件都满足要求，但还是需要核实一下
   ;设置缺测值
@@ -209,28 +228,48 @@ count = 0
   lon_new_total := ref[1]
 
 
-wks = gsn_open_wks("x11",pic_dir+filename(count))              ; send graphics to PNG file
-
-res       = True
-mpres     = True
-lnres     = True
-set_all_res(res,mpres,lnres) 
-
 ;-绘制散点图-------------------------------------------
-  map = gsn_csm_map(wks,mpres)
+  map(i) = gsn_csm_map(wks,mpres)
   plot_rain_scatter(wks,colors,num_distinct_markers,lat_new_total,\
-                    lon_new_total,map)
+                    lon_new_total,map(i))
   ; plot_sig_scatter(wks,lat_sig,lon_sig,map)
-
-;高原轮廓线
+  ;高原轮廓线
   shp_line = "/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  
-  shp_plot               = gsn_add_shapefile_polylines(wks,map,shp_line,lnres)
+  shp_plot(i)  = gsn_add_shapefile_polylines(wks,map(i),shp_line,lnres)
 
+delete([/gss,sig/])
+end do 
 
-draw(map)
+; draw(map)
+
+;组图
+  pres=True
+  pres@gsnFrame        = False  ; don't advance frame yet，以便后面使用gsn_legend_ndc   
+  pres@gsnMaximize           = True          ; maximize in frame
+  pres@gsnPaperOrientation   = "Portrait"    ;portra和maximize必须同时设置才会生效
+  ; 以下为色标设置
+  ; pres@gsnPanelLabelBar      =True    ;共用一个色标
+  ; pres@pmLabelBarOrthogonalPosF       = -0.008 ;色标条与图之间的距离
+  ; pres@pmLabelBarParallelPosF         = 0.0 
+  ; pres@pmLabelBarWidthF           = 0.5    
+  ; pres@pmLabelBarHeightF          = 0.05
+  ; pres@lbBoxLinesOn               = True ; 色标之间分界线
+  ; pres@lbBoxEndCapStyle           = "TriangleBothEnds"
+  ; pres@lbLabelFontHeightF         = 0.01
+  pres@gsnPanelBottom             = 0.04   ;底部增加空白
+  pres@gsnPanelFigureStrings      = var_str
+  pres@gsnPanelFigureStringsPerimOn = False  ;关闭子图标签序号背景框
+  pres@gsnPanelFigureStringsFontHeightF = 0.012
+  ; 调整子图间隔 子图标签位置
+  pres@amJust                     = "topLeft"
+  pres@amOrthogonalPosF           = -0.65 ;上下移动子图标签序号
+  pres@amParallelPosF             = -0.51 ;左右移动子图标签序号
+  pres@gsnPanelYWhiteSpacePercent = 8
+  pres@gsnPanelXWhiteSpacePercent = 2
+
+gsn_panel(wks, map, (/4,2/), pres) 
 ;色标图例
 add_labelbar(wks,levels,colors) 
-
 frame(wks)  
 
 end     

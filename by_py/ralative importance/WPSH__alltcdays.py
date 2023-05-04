@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Mar 13 22:23:51 2023
-用NCL算好所有TC活动日的
-副高西脊点指数和印缅槽指数
+算好所有TC活动日的副高西脊点指数和印缅槽指数
 一日一值
 然后再分配成站点的形式
 @author: Lenovo
@@ -52,7 +51,7 @@ from metpy.units import units
 # var_sel.to_netcdf('F:\\snow_sts_data\\ERA5\\all\\pick\\geo500_alltcdays.nc')
 
 
-#%% branch2 step1 计算副高西脊点指数 WRPI 
+#%% branch2 step1 python计算副高西脊点指数 WRPI 不对 未找出原因
 
 # import numpy.ma as ma
 
@@ -221,3 +220,39 @@ from metpy.units import units
 # # print('保存的数据: \n{}'.format(ds3))
 # print('测试: \n{}'.format(ds3.IBTI[12,:])) #看和ds2同一天的值是否一样
 # ds3.to_netcdf('F:\\snow_sts_data\\regress\\variable\\IBTI_station.nc')
+
+
+#%% branch4 ncl计算WRPI 读取一维1025 变成二维（1025,80）增加站点属性 保存文件
+
+# #读取wf
+# var = pd.read_table("F:\\snow_sts_data\\\ERA5\\\deal\\WRPI_alltcdays.txt",
+#                     header = None)
+# # print(var)
+# var3 = var.values.flatten() #变为1维
+# print('测试看和同一天的值是否一样: \n{}'.format(var3[12]))
+
+# # 读取时间
+# need_time=pd.read_table("F:\\snow_sts_data\\TC\\all_tc_days.txt" ,
+#                           sep='\s+')
+# need_time.columns=['tc_id','time']
+# time2 = pd.to_datetime(need_time['time'],format = '%Y%m%d')
+
+
+# path_sta='F:\\snow_sts_data\\after_quality_control\\tp_sta_info_by2014.txt'
+# station=pd.read_table(path_sta,sep = ",")
+# sta_lat=station['lat']
+# sta_lon=station['lon']
+# # time_index=np.arange(0,len(time2))
+# # broadcast 必须在最右维
+# var_sta=np.broadcast_to(var3,(len(station),len(time2)))
+# var_sta1=np.swapaxes(var_sta, 0, 1)
+# # print(var_sta1.shape)
+
+
+# ds3 = xr.Dataset()
+# ds3['WRPI'] = (('time','station'),var_sta1)
+# ds3.coords['time'] = ('time',time2)
+# ds3.coords['station'] = ('station',station['station'].values)
+
+# ds3.to_netcdf('F:\\snow_sts_data\\regress\\variable\\WRPI_station.nc')
+
