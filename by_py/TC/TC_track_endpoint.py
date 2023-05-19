@@ -109,6 +109,9 @@ tc_info1 =info1[info1.tc_id.isin(tp_tc.tc_id)]
 
 tc_info1.to_csv("F:\\snow_sts_data\\TC\\track_in_direction.txt",index=False,sep=" ")
 
+info1.to_csv("F:\\snow_sts_data\\TC\\track_in_direction_alltcs.txt",index=False,sep=" ")
+
+
 #%% 根据 TC_dot.txt 将dot按路径分类 得到TC_dot_track.txt
 
 

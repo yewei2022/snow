@@ -150,7 +150,7 @@ lbres@lbPerimOn          = False
 lbres@lgPerimColor       = "white"
 lbres@lbBoxLinesOn       = False ;色块边框
 
-; ;单张图的图例排版
+; ;图例排版 适应单张图
 ; poslb1=0.2
 ; do i = 0,3
 ; lbres@lbFillColors       = colors(i)
@@ -163,7 +163,7 @@ lbres@lbBoxLinesOn       = False ;色块边框
 ; gsn_labelbar_ndc(wks,1,levels(i),poslb2+(i-4)*0.15,0.2,lbres) 
 ; end do
 
-;组图的图例排版 全在一排
+;图例排版 全在一排
 poslb1=0.02
 do i = 0,nlevels-1
 lbres@lbFillColors       = colors(i)

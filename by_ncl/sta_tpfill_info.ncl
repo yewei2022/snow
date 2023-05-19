@@ -44,7 +44,7 @@ begin
   elev&lon  = lon_topo
 ;===========================================================================
 ; Begin plotting section.
-  wks = gsn_open_wks("eps",pic_path+"sta_alti")              ; send graphics to PNG file
+  wks = gsn_open_wks("eps",pic_path+"sta_id")              ; send graphics to PNG file
 
 ;---Set up some map resources.
   res                       = True
@@ -113,8 +113,8 @@ begin
 
 ;绘制地地形图
   map = gsn_csm_map(wks,mpres)
-  topo_plot = gsn_csm_contour(wks,elev,topores)
-  overlay(map, topo_plot)
+  ; topo_plot = gsn_csm_contour(wks,elev,topores)
+  ; overlay(map, topo_plot)
 
   ;高原轮廓线
   shp_line="/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  
@@ -139,7 +139,7 @@ begin
   reslet@txFontColor = "blue"
   ; reslet@txJust = "CenterLeft"
   do i=0,npts-1
-    dumletter(i)= gsn_add_text(wks,map,alti(i),\
+    dumletter(i)= gsn_add_text(wks,map,sta(i),\
                                lon(i), lat(i), reslet)
   end do
 

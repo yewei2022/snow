@@ -133,9 +133,9 @@ folder = "third_wf_Ri"
 # import pandas as pd
 # import numpy as np
 
-# # 测试单条
-df = pd.read_table("F:\\snow_sts_data\\regress\\"+folder+"\\sta_snow_nostd\\"+
-                    "56034.txt", sep='\s+')
+# # # 测试单条
+# df = pd.read_table("F:\\snow_sts_data\\regress\\"+folder+"\\sta_snow_nostd\\"+
+#                     "56034.txt", sep='\s+')
 # 副高指数计算有问题
 
 # record = pd.read_table("F:\\snow_sts_data\\regress\\"+folder+

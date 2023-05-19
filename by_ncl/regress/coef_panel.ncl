@@ -2,7 +2,7 @@
 ;绘制地形3/4/5km等值线,并将等值线变稀疏（切除+平滑）
 ;文件读取方式 http://www.ncl.ucar.edu/Applications/list_io.shtml
 ;散点图参考 http://www.ncl.ucar.edu/Applications/polyg.shtml polyg_8_lbar.ncl
-;  ncl /mnt/f/snow_related/code/by_ncl/regress/coef.ncl
+;  ncl /mnt/f/snow_related/code/by_ncl/regress/coef_panel.ncl
 
 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
@@ -153,6 +153,24 @@ undef("plot_sig_scatter")
   map@$unique_string("pmid")$ = pmid
   end
 
+
+;贴上三江源方框
+undef("mark_area")
+  procedure mark_area(wks,map)
+  begin
+  ypts = (/37.38,  37.38,  30.79, 30.79, 37.38/)
+  xpts = (/89.15,  102.58, 102.58, 89.15, 89.15/)
+  resp                  = True                      ; polyline mods desired
+  resp@gsLineColor      = "black"                     ; color of lines
+  resp@gsLineThicknessF = 3.0                       ; thickness of lines
+  dum_box = new(4,graphic)  
+  ; draw each line separately. Each line must contain two points.
+  do i = 0 , 3
+    dum_box(i)=gsn_add_polyline(wks,map,xpts(i:i+1),ypts(i:i+1),resp)      
+  end do 
+  map@$unique_string("dum_box")$ = dum_box
+  end
+
 ;-----------------------------main code------------------------------------
 begin
 
@@ -187,7 +205,7 @@ var_str =(/"(a)WRPI","(b)IBTI" ,"(c)RH", "(d)DIS","(e)TEM","(f)Wf","(g)Ri"/)
   npts      = numAsciiRow(filepath0)-1 ;获取行数-站点数
  
 
-wks = gsn_open_wks("eps",pic_dir+"coef")              ; send graphics to PNG file
+wks = gsn_open_wks("x11",pic_dir+"coef")              ; send graphics to PNG file
 
 map = new(7,graphic)
 shp_plot = new(7,graphic)
@@ -236,6 +254,8 @@ do i =0, 6
   ;高原轮廓线
   shp_line = "/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  
   shp_plot(i)  = gsn_add_shapefile_polylines(wks,map(i),shp_line,lnres)
+  ; mark_area(wks,map(i)) ;三江源方框
+
 
 delete([/gss,sig/])
 end do 

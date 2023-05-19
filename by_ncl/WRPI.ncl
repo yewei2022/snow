@@ -68,24 +68,25 @@ do i = 0, dimsizes(date)-1
     ; 测试lon 对不对
     ; printVarSummary(lon(0,5))
     ; printVarSummary(lon(40,5))
-    ; lon@_FillValue := 32700.
+    ; lon@_FillValue := 32700. ;报错 判断条件不能是缺测值，故32700不能带缺测值属性
     lon_mask := where((z_need1.ge.value_min) .and. (z_need1.lt.value_max),\
     lon, 32700.)
     copy_VarCoords(z_need1, lon_mask)
     min_lon := min(lon_mask)
-    print("======"+tostring(need_date)+"=MIN=====")
+    print("======"+tostring(need_date)+"==="+tostring(value_max)+"=MIN=====")
     print(tostring(min_lon))
     print("========================")
     value_min := value_min-1.
     value_max := value_max-1. 
-  end do  
-  print("======"+tostring(need_date)+"=MIN=final=====")
+  end do 
+  ; 因为上条语句至少执行1次，value_max会无效+1 
+  print("======"+tostring(need_date)+"==="+tostring(value_max+1)+"=MIN=final=====")
   print(tostring(min_lon))
   print("========================")
 lon_arr(i) = min_lon
 end do 
 
-; ; 写入二进制文件 记得把原文件删掉 不然运行一次接着写入一次
+; ; 写入txt文件 记得把原文件删掉 不然运行一次接着写入一次
   fout_name = "/mnt/f/snow_sts_data/ERA5/deal/WRPI_alltcdays.txt"
   print("--------------------------------------")
   print("start writing output files: " + fout_name + " ......")

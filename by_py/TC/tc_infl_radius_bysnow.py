@@ -89,17 +89,17 @@ path_tc="F:\\snow_sts_data\\TC\\BoB_ymdh_bjt_lon_lat.txt"
 #%% step 2 确定风暴半径平均值 分位数 
 
 # df_tp   = pd.read_table(path_save+'tcdist_bysnow.txt',sep = "\t",na_values=32700)
-# df_ave      =df_tp['dist'].mean() 
+# df_ave  = df_tp['dist'].mean() 
 # print('风暴影响半径平均值:',df_ave)
 
-# # tp_500 = df_tp[df_tp['dist']<=500].shape[0]
-# # tp_500_1000 = df_tp[(df_tp['dist']<=1000) & (df_tp['dist']>500)].shape[0]
-# # tp_1000_1500 = df_tp[(df_tp['dist']<=1500) & (df_tp['dist']>1000)].shape[0]
-# # tp_1500_2000 = df_tp[(df_tp['dist']<=2000) & (df_tp['dist']>1500)].shape[0]
-# # tp_2000_2500 = df_tp[(df_tp['dist']<=2500) & (df_tp['dist']>2000)].shape[0]
-# # tp_2500 = df_tp[df_tp['dist']>2500].shape[0]
-# # cum_tp=df_tp['dist'].quantile([0,0.25,0.5,0.75,0.8,0.9,0.95,1])    #用df计算百分分位数
-# # df_dist_bysta=df_tp.groupby(by=['station'])['dist'].mean()  #平均值
+# tp_500 = df_tp[df_tp['dist']<=500].shape[0]
+# tp_500_1000 = df_tp[(df_tp['dist']<=1000) & (df_tp['dist']>500)].shape[0]
+# tp_1000_1500 = df_tp[(df_tp['dist']<=1500) & (df_tp['dist']>1000)].shape[0]
+# tp_1500_2000 = df_tp[(df_tp['dist']<=2000) & (df_tp['dist']>1500)].shape[0]
+# tp_2000_2500 = df_tp[(df_tp['dist']<=2500) & (df_tp['dist']>2000)].shape[0]
+# tp_2500 = df_tp[df_tp['dist']>2500].shape[0]
+# cum_tp=df_tp['dist'].quantile([0,0.25,0.5,0.75,0.8,0.9,0.95,1])    #用df计算百分分位数
+# df_dist_bysta=df_tp.groupby(by=['station'])['dist'].mean()  #平均值
 
 
 #%% step 2.1 降雪期间 极端降雪期间 距离的 概率密度图

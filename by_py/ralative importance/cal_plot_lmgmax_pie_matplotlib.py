@@ -19,39 +19,39 @@ import numpy as np
 
 #%% 统计
 
-# folder = "third_wf_Ri"
-# pic_dir = "F:\\snow_related\\pic\\regress\\"+folder+"\\"   
-# path_file="F:\\snow_sts_data\\regress\\"+folder+"\\"+"coef\\"
-# f_list1 = os.listdir(path_file)
-# info=[]
-# for file in f_list1:
-#     df_sta = pd.read_table(path_file+file,sep='\s+',usecols=[1,2,3,4],
-#                             index_col=0,na_values=32700)
-#     df_sta.loc['station', :] = file[0:5] 
-#     info.append(df_sta.loc[:,"lmg1"])
+folder = "third_wf_Ri"
+pic_dir = "F:\\snow_related\\pic\\regress\\"+folder+"\\"   
+path_file="F:\\snow_sts_data\\regress\\"+folder+"\\"+"coef\\"
+f_list1 = os.listdir(path_file)
+info=[]
+for file in f_list1:
+    df_sta = pd.read_table(path_file+file,sep='\s+',usecols=[1,2,3,4],
+                            index_col=0,na_values=32700)
+    df_sta.loc['station', :] = file[0:5] 
+    info.append(df_sta.loc[:,"lmg1"])
     
-# df = pd.concat(info,axis=1,ignore_index=True) #变成dataframe
-# df0 = df.T
-# df0.drop(['(Intercept)'],axis=1,inplace=True)
+df = pd.concat(info,axis=1,ignore_index=True) #变成dataframe
+df0 = df.T
+df0.drop(['(Intercept)'],axis=1,inplace=True)
 
-# # 以前只有5个变量
-# # df0.columns = ['IBTI', 'RH','DIS','TEM','WRPI','station']
-# # order = ['WRPI','IBTI','RH','DIS','TEM','station']
-# # 现在7个变量
-# df0.columns = ['IBTI', 'RH','Ri','DIS','TEM','Wf','WRPI',
-#                 'station'] #!!! 变量改名 得看df0里面变量顺序
-# order = ['WRPI','IBTI','RH','DIS','TEM','Wf','Ri','station'] #!!!
-# df0 = df0[order]
-# df0.loc[:,'station'] = df0['station'].astype(int)
-# df1 = df0.set_index(['station']) #设置索引
+# 以前只有5个变量
+# df0.columns = ['IBTI', 'RH','DIS','TEM','WRPI','station']
+# order = ['WRPI','IBTI','RH','DIS','TEM','station']
+# 现在7个变量
+df0.columns = ['IBTI', 'RH','Ri','DIS','TEM','Wf','WRPI',
+                'station'] #!!! 变量改名 得看df0里面变量顺序
+order = ['WRPI','IBTI','RH','DIS','TEM','Wf','Ri','station'] #!!!
+df0 = df0[order]
+df0.loc[:,'station'] = df0['station'].astype(int)
+df1 = df0.set_index(['station']) #设置索引
 
-# # # 行最大值列索引 不用这个
-# # df2 = df1.astype(float).idxmax(axis=1) #行最大值的列索引
-# # df3 = pd.DataFrame(df2 , columns=['col_name'])
+# # 行最大值列索引 不用这个
+# df2 = df1.astype(float).idxmax(axis=1) #行最大值的列索引
+# df3 = pd.DataFrame(df2 , columns=['col_name'])
 
-# # 行第n大值的索引
-# n = 2
-# df1['col_name'] = df1.columns.to_numpy()[np.argsort(df1.to_numpy())[:, -n]]
+# 行第n大值的索引
+n = 2
+df1['col_name'] = df1.columns.to_numpy()[np.argsort(df1.to_numpy())[:, -n]]
 
 
 #%%  保存文件
@@ -76,14 +76,14 @@ import numpy as np
 
 # import matplotlib.pyplot as plt
 
-# df3 = df1
-# df_g1 = df3[df3['col_name']=='WRPI']
-# df_g2 = df3[df3['col_name']=='IBTI']
-# df_g3 = df3[df3['col_name']=='RH']
-# df_g4 = df3[df3['col_name']=='DIS']
-# df_g5 = df3[df3['col_name']=='TEM']
-# df_g6 = df3[df3['col_name']=='Wf']
-# df_g7 = df3[df3['col_name']=='Ri']
+df3 = df1
+df_g1 = df3[df3['col_name']=='WRPI'] #看有几个站点
+df_g2 = df3[df3['col_name']=='IBTI']
+df_g3 = df3[df3['col_name']=='RH']
+df_g4 = df3[df3['col_name']=='DIS']
+df_g5 = df3[df3['col_name']=='TEM']
+df_g6 = df3[df3['col_name']=='Wf']
+df_g7 = df3[df3['col_name']=='Ri']
 # position=['WRPI','IBTI','RH','DIS','TEM','Wf','Ri']
 # Num0= [len(df_g1), len(df_g2),len(df_g3),len(df_g4),len(df_g5),
 #         len(df_g6),len(df_g7)] 
@@ -110,12 +110,12 @@ import numpy as np
 
 # # #为了解决n=1时的标签重叠问题 单独对某个标签确定位置
 # # for i in range(len(autotexts)):
-# #     if i == 0: #第1个标签的位置
+# #     if i == 0: #第1个百分比标签位置
 # #         print(texts[i].set_y(0.1))
-# #         print(autotexts[i].set_y(0.05)) #值越小越靠下
-# #     if i == 1:
+# #         print(autotexts[i].set_y(0.2)) #值越小越靠下
+# #     if i == 1: #第2个百分比标签位置
 # #         print(texts[i].set_y(0.05))
-# #         print(autotexts[i].set_y(0.2))
+# #         print(autotexts[i].set_y(0.05))
         
 # plt.pie([1], radius=0.3, colors='w') # 圆环，里面那个圆为白色
 # plt.legend(labels=position,loc='upper right', fontsize=15,
@@ -124,6 +124,8 @@ import numpy as np
 # plt.axis('equal') #饼图显示为正圆形
 # plt.rcParams['font.sans-serif']= ['Arial']    # 设置字体 
 # plt.savefig(pic_dir+"lmg"+str(n)+'_pie.jpg',dpi=1000,bbox_inches='tight')
+# plt.savefig(pic_dir+"lmg"+str(n)+'_pie.eps',dpi=1000,bbox_inches='tight')
+
 # #bboxinches 边缘少留白
 # plt.show()
 
@@ -132,4 +134,4 @@ import numpy as np
 
 # # # 如何解决饼图标签重叠问题
 # # # https://www.jb51.net/article/257801.htm
-# # # https://www.freesion.com/article/7189953919/
+# # # # https://www.freesion.com/article/7189953919/
