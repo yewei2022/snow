@@ -95,5 +95,20 @@ import pandas as pd
 
 # time2=time1.dt.strftime('%Y%m%d') #时间变字符串
 
+#%% 获取带小数点的时间
 
+# path_file1 = 'F:\\CZ\\data\\钢梁平台风速风向.txt'
+# a1 = pd.read_table(path_file1,sep=',',nrows=500)
+# print(a1.dtypes)
+# # 转换时间，法一
+# # Measure_ID,col0,col1,col2
+# # 6693290,2022-01-01-00-00-00.734,103,5
+# a1.loc[:,'time'] = pd.to_datetime(a1['col0'],format = '%Y-%m-%d-%H-%M-%S.%f') 
+
+# # 转换时间，法二
+# # def convert(x):
+# #     time = dt.datetime.strptime(x['col0'], '%Y-%m-%d-%H-%M-%S.%f') #字符串变时间
+# #     return time                   
+# # https://blog.csdn.net/T_110140/article/details/123658046
+# # a1.loc[:,'time']= a1.apply(convert, axis=1)
         

@@ -114,6 +114,7 @@ resline@tmYRLabelsOn         = True
 ; resline@xyDashPattern=lineDashPattern(1) 
 resline@tiYAxisString = axis_name(count) ; y-axis label
 
+
 plot=gsn_csm_xy2(wks, year, std_anoma_var, var_arry, resbar, resline)
 
 ; plot_line=gsn_csm_xy(wks, year, var_arry, polyres)

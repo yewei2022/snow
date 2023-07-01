@@ -1,5 +1,5 @@
 ; 计算地形强迫抬升速度 Wf 并写入bin文件
-; 中途有一些没有必要的时间转换 时间处理
+; 中途有一些没有必要的时间转换 时间处理 主要是要读取PY 输出的nc文件时间
 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl" 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl" 
@@ -8,7 +8,7 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/contrib/cd_string.ncl"
 load "/mnt/f/snow_related/code/by_ncl/codebefore/RTC/create_netcdf_file_utils.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/contrib/calendar_decode2.ncl"
 
-;  ncl /mnt/f/snow_related/code/by_ncl/write_wf.ncl
+;  ncl /mnt/f/snow_related/code/by_ncl/write_wf_deal_pynctime.ncl
 
 begin
 
@@ -55,6 +55,11 @@ begin
   ; printVarSummary(u_in&time)
   ; copy_VarCoords(u_in, v_in)
 
+
+  ; ; examine time series;two methods-two var type ;对一列时间数组
+  ; ;time    =data1->time
+  ; ;YYYYMMDDHH_f=cd_calendar(time,-3)
+  
   ; ; path_format = "%Y%N%D%H"   ; YYYYMMMDDHH
   ; ; time  = cd_string(timeset_ymdh,path_format) ;只能对一个时间标量
   ; ; printVarSummary(timeset_ymdh)

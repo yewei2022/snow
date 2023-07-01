@@ -75,7 +75,7 @@ import numpy as np
 #                 sep='\t',na_rep=32700)
 
 
-#%% step3 calculate gss_inc
+#%% step3 calculate gss_inc 后一天减去前一天的值，标记为前一天的时间（应该是吧？）
 
 # info=pd.read_table("F:\\snow_sts_data\\1981-2020\\gss_all.txt",
 #                   usecols=['time','station','gss'],na_values=32700)
