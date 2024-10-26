@@ -1,4 +1,4 @@
-;读取站点温度异常(差值，画彩色散点图
+;读取站点温度异常(差值，画彩色散点图 区域分割线
 ;文件读取方式 http://www.ncl.ucar.edu/Applications/list_io.shtml
 ;散点图参考 http://www.ncl.ucar.edu/Applications/polyg.shtml polyg_8_lbar.ncl
 ;  ncl /mnt/h/snow_related/code/by_ncl/tem_avg.ncl

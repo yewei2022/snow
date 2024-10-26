@@ -1,0 +1,161 @@
+;绘制高原站点位置 id  alti 地形填图
+;文件读取方式 http://www.ncl.ucar.edu/Applications/list_io.shtml
+;散点图参考 http://www.ncl.ucar.edu/Applications/polyg.shtml polyg_8_lbar.ncl
+;  ncl /mnt/e/backups/f/snow_related/code/by_ncl/Xizang.ncl
+
+
+load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
+load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
+load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
+
+
+
+begin
+
+  ; filepath = "/mnt/f/snow_sts_data/after_quality_control/"  ;参数文件路径
+  ; name="tp_sta_info_by2014"
+  pic_path = "/mnt/e/backups/f/snow_related/pic/"
+  ; f       = asciiread(filepath+name+".txt",-1,"string")
+  ; sta     = str_get_field(f(1:),1,",")  ;读取站号
+  ; lon     = stringtofloat(str_get_field(f(1:),2,",")) 
+  ; lat     = stringtofloat(str_get_field(f(1:),3,",")) 
+  ; alti    = str_get_field(f(1:),4,",") 
+
+  ; npts = numAsciiRow(filepath+name+".txt")-1 ;获取行数-1=站点数
+
+; ;读地形文件
+;   topo        = addfile("/mnt/d/case/data/other/ETOPO2v2c_f4.nc", "r")
+;   elev        = topo->z({0:50},{70:110}) 
+;   ; printVarSummary(elev)
+;   ; exit 
+;   lat_topo    = fspan(0,50,1500)
+;   lon_topo    = fspan(70,110,1200)
+;   lat_topo!0     = "lat"
+;   lon_topo!0     = "lon"
+;   lat_topo@units = "degrees_north"
+;   lon_topo@units = "degrees_east"
+;   lat_topo&lat   = lat_topo
+;   lon_topo&lon   = lon_topo
+
+;   ;---Attach the coordinate arrays
+;   elev!0    = "lat"
+;   elev!1    = "lon"
+;   elev&lat  = lat_topo
+;   elev&lon  = lon_topo
+; ;===========================================================================
+; Begin plotting section.
+  wks = gsn_open_wks("pdf",pic_path+"Xizang")              ; send graphics to PNG file
+
+;---Set up some map resources.
+  res                       = True
+  ; res@gsnMaximize           = True             ; Maximize plot in frame.
+  res@gsnDraw               = False            ; Will draw later
+  res@gsnFrame              = False            ; Don't advance the frame
+  res@gsnLeftString         = ""
+  res@gsnRightString        = ""
+  res@tmYROn                =False
+  res@tmXTOn                =False
+
+  ; res@vpWidthF=1.0
+  ; res@vpHeightF=0.6
+
+  ;-----------地图属性-----------------
+  mpres                       =res
+  mpres@mpMinLatF             = 26.
+  mpres@mpMaxLatF             = 40.
+  mpres@mpMinLonF             = 74
+  mpres@mpMaxLonF             = 105
+  mpres@gsnMajorLonSpacing    =5. 
+  mpres@gsnMinorLonSpacing    =1.    
+  mpres@gsnMajorLatSpacing    =5. 
+  mpres@gsnMinorLatSpacing    =1
+
+  mpres@mpFillOn=False
+  mpres@mpDataBaseVersion       = "MediumRes"
+  mpres@mpDataSetName           =  "/mnt/d/ChinaMap/Earth..4" 
+  mpres@mpOutlineSpecifiers     = (/"Xizang"/)
+  ;边界线
+  ; mpres@mpOutlineBoundarySets   = "National"
+  mpres@mpNationalLineColor     = "black"
+  mpres@mpProvincialLineColor   = "black"
+  mpres@mpGeophysicalLineColor  = "black"
+  mpres@mpNationalLineThicknessF  =2.5
+  mpres@mpProvincialLineThicknessF  =2.5
+  mpres@mpGeophysicalLineThicknessF = 2.5
+
+
+
+  ; ;---高原地形填图
+  ; topores                    = res
+  ; topores@cnFillOn           = True             ; turn off contour fill
+  ; topores@cnFillPalette      = "OceanLakeLandSnow" ;topo_15lev OceanLakeLandSnow MPL_Greys
+  ; topores@cnLinesOn          = False
+  ; topores@cnLevelSelectionMode="ManualLevels" 
+  ; topores@cnLevelSpacingF    = 250
+  ; topores@cnMinLevelValF     = 0
+  ; topores@cnMaxLevelValF     =5000            
+  ; topores@cnFillMode         = "RasterFill"     ; much faster than AreaFill
+  ; topores@lbBoxLinesOn       = True ; Label bar
+  ; ; topores@lbLabelAutoStride  = True            ; let NCL determine label spacing
+  ; topores@lbLabelStride  = 2            ; let NCL determine label spacing
+
+  ; topores@cnLineLabelsOn     = False            ; turn off line labels
+  ; topores@cnInfoLabelOn      = False            ; turn off info label
+  ; topores@pmLabelBarHeightF  = 0.12
+  ; topores@lbBoxEndCapStyle   ="TriangleBothEnds"
+  ; topores@pmLabelBarOrthogonalPosF  = 0.15 ;色标离图的距离
+  ; topores@lbTitleString                  ="elevation(m)"
+  ; topores@lbTitleJust                    ="BottomRight"
+  ; topores@lbTitlePosition                ="Bottom"
+  ; topores@lbLabelFontHeightF = 0.01
+  ; topores@lbTitleFontHeightF = 0.01
+
+
+;绘制地地形图
+  map = gsn_csm_map(wks,mpres)
+  ; topo_plot = gsn_csm_contour(wks,elev,topores)
+  ; overlay(map, topo_plot)
+
+  ;高原轮廓线
+  shp_line="/mnt/e/backups/f/snow_sts_data/TPshp/DBATP/DBATP_Line.shp"  
+  lnres                  = True     
+  lnres@gsLineColor      ="orange"
+  lnres@gsLineThicknessF = 4.0           ; 6x thickness 
+  plot_topoline= gsn_add_shapefile_polylines(wks,map,shp_line,lnres) 
+
+  ;中国省界线
+  shp_line1="/mnt/d/ChinaMap/Xizang/Xizang.shp"  
+  lnres1                  = True     
+  lnres1@gsLineColor      ="red"
+  lnres1@gsLineThicknessF = 3.0           ; 6x thickness 
+  plot_topoline1= gsn_add_shapefile_polylines(wks,map,shp_line1,lnres1) 
+
+
+; ; 绘制散点
+;   gsres               = True
+;   gsres@gsMarkerIndex = 16
+;   gsres@gsMarkerSizeF      = 0.01  
+;   gsres@gsMarkerColor      = "red"
+;   gsres@gsMarkerThicknessF = 2.0
+;   pmid = gsn_add_polymarker(wks,map,lon,lat,gsres)      
+
+; ; 在map上标记站号
+;   dumletter = new(npts,graphic)
+;   reslet = True
+;   reslet@txFontHeightF = 0.012
+;   reslet@txFontThicknessF=0.22
+;   reslet@txFontColor = "blue"
+;   ; reslet@txJust = "CenterLeft"
+;   do i=0,npts-1
+;     dumletter(i)= gsn_add_text(wks,map,sta(i),\
+;                                lon(i), lat(i), reslet)
+;   end do
+
+draw(map)
+frame(wks)
+end     
+ 
+
+
+ 
+

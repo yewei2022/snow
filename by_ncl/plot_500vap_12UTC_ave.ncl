@@ -216,9 +216,9 @@ wks = gsn_open_wks("eps", pic_dir+"snowday"+"_fluxdiv500_Type"+tostring(typelabe
   windRes@vcRefAnnoOrthogonalPosF=0
   windRes@vcRefAnnoPerimSpaceF=0.1
   windRes@vcRefAnnoArrowSpaceF=1
-  windRes@vcMonoLineArrowColor=False
   windRes@lbLabelBarOn        = False
   ;大于2 换颜色
+  windRes@vcMonoLineArrowColor=False
   windRes@vcLevelSelectionMode="ExplicitLevels" 
   windRes@vcLevels=(/2/)
   windRes@vcLevelColors=(/"black","red"/)

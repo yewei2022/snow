@@ -3,28 +3,29 @@
 ;计算每日距平 
 ;1 选出降雪日距平再做平均，绘图
 ;2 TC日平均 绘图
-; 改step3 和4  picname 绘图dev
+;3 改step3 和4  picname 绘图dev
 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl" 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl" 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl" 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/contrib/cd_string.ncl"
 
-;  ncl /mnt/f/snow_related/code/by_ncl/plot_200dev_12UTC_ave.ncl
+;  ncl /mnt/e/backups/f/snow_related/code/by_ncl/plot_200dev_12UTC_ave.ncl
 
 begin
 
-typelabel     = 1 ;1 2
-pic_dir  = "/mnt/f/snow_related/pic/atmos_env/REOF/" 
+jet = 40; 急流 超过多少 灰色箭头
+typelabel     = 2  ;1 2 分别是东南型、偏西型
+pic_dir  = "/mnt/e/backups/f/snow_related/pic/atmos_env/REOF/review1/" 
 
 ; 1 read ERA5
 name1=(/"geo200","u200","v200"/)
 count:=0
-data_dir0 ="/mnt/f/snow_sts_data/ERA5/all/pick/"+name1(count)+"_6h.nc" 
+data_dir0 ="/mnt/e/backups/f/snow_sts_data/ERA5/pick/"+name1(count)+"_6h.nc" 
 count:=1
-data_dir1 ="/mnt/f/snow_sts_data/ERA5/all/pick/"+name1(count)+"_6h.nc" 
+data_dir1 ="/mnt/e/backups/f/snow_sts_data/ERA5/pick/"+name1(count)+"_6h.nc" 
 count:=2
-data_dir2 ="/mnt/f/snow_sts_data/ERA5/all/pick/"+name1(count)+"_6h.nc" 
+data_dir2 ="/mnt/e/backups/f/snow_sts_data/ERA5/pick/"+name1(count)+"_6h.nc" 
 
 ; 1 读数据
 data0    = addfile(data_dir0, "r")
@@ -58,7 +59,7 @@ u_Day_mean = calculate_daily_values(u, "avg", 0, opt)
 v_Day_mean = calculate_daily_values(v, "avg", 0, opt)
 
 ; ; 3 读取TC活动日 挑出TC活动日的日均值
-date_dir_TC ="/mnt/f/snow_sts_data/TC/all_tc_days.txt"  ;1025
+date_dir_TC ="/mnt/e/backups/f/snow_sts_data/TC/all_tc_days.txt"  ;1025
 datefile_TC = asciiread(date_dir_TC,-1,"string")
 YYYYMMDD_TC = str_get_field(datefile_TC(1:),2," ") 
 date_ind_TC=new(dimsizes(YYYYMMDD_TC), integer)
@@ -83,7 +84,7 @@ v_need1=v_Day_mean(date_ind_TC,:,:)
   ; print(date_RmvTime)
 
   ; ; 读取降雪日 116日 挑出降雪日的日均值 日距平
-  date_dir_snow ="/mnt/f/snow_sts_data/REOF/spa_index.txt" ;118
+  date_dir_snow ="/mnt/e/backups/f/snow_sts_data/REOF/spa_index.txt" ;118
   datefile_snow = asciiread(date_dir_snow,-1,"string")
   YYYYMMDD_snow = str_get_field(datefile_snow(1:),1," ") 
   type          = str_get_field(datefile_snow(1:),4," ")
@@ -115,7 +116,8 @@ delete([/data0,data1,data2,z,u,v,\
        z_Day_mean,u_Day_mean,v_Day_mean/])
 
 
-wks = gsn_open_wks("eps", pic_dir+"snowday_"+"geo200_Type"+tostring(typelabel))
+wks = gsn_open_wks("pdf", pic_dir+"snowday_"+"geo200_Type"+\
+                   tostring(typelabel) +"_"+tostring(jet)+"ms")
 ; wks = gsn_open_wks("eps", pic_dir+"TCday_"+"geo200")
 
 
@@ -221,6 +223,12 @@ windRes@vcRefAnnoOrthogonalPosF=0
 windRes@vcRefAnnoPerimSpaceF=0.1
 windRes@vcRefAnnoArrowSpaceF=1
 
+;大于30 换颜色 找出急流轴
+windRes@vcMonoLineArrowColor=False
+windRes@vcLevelSelectionMode="ExplicitLevels" 
+windRes@vcLevels= 30
+windRes@vcLevelColors=(/"black","gray"/)
+windRes@lbLabelBarOn        = False
 
 ;绘图
 
@@ -236,7 +244,7 @@ overlay(map, contour_avg)
 
 
 ;高原轮廓线
-  shpfile  ="/mnt/f/snow_sts_data/TPshp/DBATP/DBATP_Polygon.shp"
+  shpfile  ="/mnt/e/backups/f/snow_sts_data/TPshp/DBATP/DBATP_Polygon.shp"
   lnres                  = True     
   lnres@gsLineColor      ="orange"
   lnres@gsLineThicknessF = 6.0           ; 6x thickness  
